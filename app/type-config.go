@@ -2,11 +2,9 @@ package app
 
 import (
 	"encoding/csv"
-	"kscan/core/hydra"
 	"kscan/core/slog"
 	"kscan/lib/misc"
 	"os"
-	"strings"
 	"sync"
 	"time"
 )
@@ -66,17 +64,6 @@ func ConfigInit() {
 	Setting.OutputCSV = loadOutputCSV(args.OutputCSV)
 	Setting.ScanVersion = args.ScanVersion
 	//Setting.CloseColor = args.CloseColor
-	//hydra模块
-	Setting.Hydra = args.Hydra
-	Setting.HydraUpdate = args.HydraUpdate
-	Setting.HydraUser = args.HydraUser
-	Setting.HydraPass = args.HydraPass
-	Setting.loadHydraMod(args.HydraMod)
-	//fofa模块
-	Setting.Fofa = args.Fofa
-	Setting.FofaSize = args.FofaSize
-	Setting.FofaFixKeyword = args.FofaFixKeyword
-	Setting.Scan = args.Scan
 	//CDN检测模块
 	Setting.DownloadQQwry = args.DownloadQQwry
 	Setting.CloseCDN = args.CloseCDN
@@ -196,34 +183,6 @@ func (c *Config) loadScanPing() {
 	} else {
 		c.ClosePing = Args.ClosePing
 	}
-}
-
-func (c *Config) loadHydraMod(splice []string) {
-	if len(splice) == 0 {
-		c.HydraMod = hydra.ProtocolList
-		return
-	}
-	if splice[0] == "all" {
-		c.HydraMod = hydra.ProtocolList
-		return
-	}
-	c.HydraMod = splice
-}
-
-func (c *Config) loadFofaField(expr string) []string {
-	//判断对象是否为多个
-	if strArr := strings.ReplaceAll(expr, "\\,", "[DouHao]"); strings.Count(strArr, ",") > 0 {
-		var passArr []string
-		for _, str := range strings.Split(strArr, ",") {
-			passArr = append(passArr, strings.ReplaceAll(str, "[DouHao]", ","))
-		}
-		return passArr
-	}
-	//对象为单个且不为空时直接返回
-	if expr != "" {
-		return []string{expr}
-	}
-	return []string{}
 }
 
 func New() Config {

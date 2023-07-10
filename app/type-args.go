@@ -17,14 +17,6 @@ type args struct {
 	OutputJson, OutputCSV                           string
 	Spy, Touch                                      string
 	Top, Threads, Timeout                           int
-	//hydra模块
-	Hydra, HydraUpdate             bool
-	HydraUser, HydraPass, HydraMod []string
-	//fofa模块
-	Fofa                      []string
-	FofaField, FofaFixKeyword string
-	FofaSize                  int
-	FofaSyntax                bool
 	//输出修饰
 	Match, NotMatch string
 }
@@ -43,7 +35,7 @@ func (o *args) Parse() {
 	o.printBanner()
 }
 
-//定义参数
+// 定义参数
 func (o *args) define() {
 	sflag.BoolVar(&o.Help, "h", false)
 	sflag.BoolVar(&o.Help, "help", false)
@@ -51,20 +43,6 @@ func (o *args) define() {
 	sflag.BoolVar(&o.Debug, "d", false)
 	//spy模块
 	sflag.AutoVarString(&o.Spy, "spy", "None")
-	//hydra模块
-	sflag.BoolVar(&o.Hydra, "hydra", false)
-	sflag.BoolVar(&o.HydraUpdate, "hydra-update", false)
-	sflag.StringSpliceVar(&o.HydraUser, "hydra-user")
-	sflag.StringSpliceVar(&o.HydraPass, "hydra-pass")
-	sflag.StringSpliceVar(&o.HydraMod, "hydra-mod")
-	//fofa模块
-	sflag.StringSpliceVar(&o.Fofa, "fofa")
-	sflag.StringSpliceVar(&o.Fofa, "f")
-	sflag.StringVar(&o.FofaField, "fofa-field", "")
-	sflag.StringVar(&o.FofaFixKeyword, "fofa-fix-keyword", "")
-	sflag.IntVar(&o.FofaSize, "fofa-size", 100)
-	sflag.BoolVar(&o.FofaSyntax, "fofa-syntax", false)
-	sflag.BoolVar(&o.Scan, "scan", false)
 	//kscan模块
 	sflag.StringSpliceVar(&o.Target, "target")
 	sflag.StringSpliceVar(&o.Target, "t")
@@ -114,16 +92,6 @@ func (o *args) SetHelp(help string) {
 
 // CheckArgs 校验参数真实性
 func (o *args) CheckArgs() {
-	//判断必须的参数是否存在
-	if len(o.Target) == 0 && len(o.Fofa) == 0 && o.Spy == "None" && o.DownloadQQwry == false {
-		fmt.Print("至少有--target、--fofa、--spy参数中的一个")
-		os.Exit(0)
-	}
-	//判断冲突参数
-	if len(o.Target) > 0 && len(o.Fofa) == 0 && o.Spy != "None" && o.Touch == "None" {
-		fmt.Print("--target、--fofa、--spy不能同时使用")
-		os.Exit(0)
-	}
 	if len(o.Port) > 0 && o.Top != 400 {
 		fmt.Print("--port、--top参数不能同时使用")
 		os.Exit(0)
@@ -142,7 +110,7 @@ func (o *args) CheckArgs() {
 	}
 }
 
-//输出LOGO
+// 输出LOGO
 func (o *args) printBanner() {
 	if len(os.Args) == 1 {
 		fmt.Print(o.LOGO)
@@ -153,12 +121,6 @@ func (o *args) printBanner() {
 		fmt.Print(o.LOGO)
 		fmt.Print(o.USAGE)
 		fmt.Print(o.HELP)
-		os.Exit(0)
-	}
-	if o.FofaSyntax {
-		fmt.Print(o.LOGO)
-		fmt.Print(o.USAGE)
-		fmt.Print(o.SYNTAX)
 		os.Exit(0)
 	}
 	//打印logo
