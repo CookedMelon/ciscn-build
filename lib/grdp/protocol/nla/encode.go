@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"golang.org/x/crypto/md4"
-	"kscan/lib/grdp/core"
+	"jkscan/lib/grdp/core"
 )
 
 func MD4(data []byte) []byte {

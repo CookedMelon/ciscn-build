@@ -12,9 +12,9 @@ import (
 
 	"github.com/lunixbochs/struc"
 
-	"kscan/lib/grdp/core"
-	"kscan/lib/grdp/emission"
-	"kscan/lib/grdp/glog"
+	"jkscan/lib/grdp/core"
+	"jkscan/lib/grdp/emission"
+	"jkscan/lib/grdp/glog"
 )
 
 // ProtocolVersion

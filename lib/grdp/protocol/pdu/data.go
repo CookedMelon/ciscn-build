@@ -7,8 +7,8 @@ import (
 	"io"
 
 	"github.com/lunixbochs/struc"
-	"kscan/lib/grdp/core"
-	"kscan/lib/grdp/glog"
+	"jkscan/lib/grdp/core"
+	"jkscan/lib/grdp/glog"
 )
 
 const (

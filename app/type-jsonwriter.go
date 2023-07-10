@@ -2,7 +2,7 @@ package app
 
 import (
 	"encoding/json"
-	"kscan/core/slog"
+	"jkscan/core/slog"
 	"os"
 	"sync"
 )

@@ -7,11 +7,11 @@ import (
 	"fmt"
 	"io"
 
-	"kscan/lib/grdp/glog"
+	"jkscan/lib/grdp/glog"
 
 	"github.com/lunixbochs/struc"
-	"kscan/lib/grdp/core"
-	"kscan/lib/grdp/protocol/t125/gcc"
+	"jkscan/lib/grdp/core"
+	"jkscan/lib/grdp/protocol/t125/gcc"
 )
 
 type CapsType uint16

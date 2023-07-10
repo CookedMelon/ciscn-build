@@ -3,7 +3,7 @@ package nla
 import (
 	"encoding/asn1"
 
-	"kscan/lib/grdp/glog"
+	"jkscan/lib/grdp/glog"
 )
 
 type NegoToken struct {

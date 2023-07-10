@@ -1,4 +1,4 @@
-module kscan
+module jkscan
 
 go 1.18
 

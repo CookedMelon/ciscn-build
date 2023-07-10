@@ -2,8 +2,8 @@ package app
 
 import (
 	"encoding/csv"
-	"kscan/core/slog"
-	"kscan/lib/misc"
+	"jkscan/core/slog"
+	"jkscan/lib/misc"
 	"os"
 	"sync"
 	"time"

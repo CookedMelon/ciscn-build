@@ -1,8 +1,8 @@
 package scanner
 
 import (
-	"kscan/lib/osping"
-	"kscan/lib/tcpping"
+	"jkscan/lib/osping"
+	"jkscan/lib/tcpping"
 	"net"
 )
 

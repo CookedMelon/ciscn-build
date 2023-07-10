@@ -6,11 +6,11 @@ import (
 	"io"
 	"os"
 
-	"kscan/lib/grdp/glog"
+	"jkscan/lib/grdp/glog"
 
 	"github.com/lunixbochs/struc"
-	"kscan/lib/grdp/core"
-	"kscan/lib/grdp/protocol/t125/per"
+	"jkscan/lib/grdp/core"
+	"jkscan/lib/grdp/protocol/t125/per"
 )
 
 var t124_02_98_oid = []byte{0, 0, 20, 124, 0, 1}

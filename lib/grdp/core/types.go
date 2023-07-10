@@ -1,6 +1,6 @@
 package core
 
-import "kscan/lib/grdp/emission"
+import "jkscan/lib/grdp/emission"
 
 type Transport interface {
 	Read(b []byte) (n int, err error)

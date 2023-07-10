@@ -5,10 +5,10 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	"kscan/lib/grdp/core"
-	"kscan/lib/grdp/emission"
-	"kscan/lib/grdp/glog"
-	"kscan/lib/grdp/protocol/nla"
+	"jkscan/lib/grdp/core"
+	"jkscan/lib/grdp/emission"
+	"jkscan/lib/grdp/glog"
+	"jkscan/lib/grdp/protocol/nla"
 )
 
 // take idea from https://github.com/Madnikulin50/gordp

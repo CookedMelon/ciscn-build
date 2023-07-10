@@ -2,7 +2,7 @@ package app
 
 import (
 	"fmt"
-	"kscan/lib/sflag"
+	"jkscan/lib/sflag"
 	"os"
 )
 
@@ -43,7 +43,7 @@ func (o *args) define() {
 	sflag.BoolVar(&o.Debug, "d", false)
 	//spy模块
 	sflag.AutoVarString(&o.Spy, "spy", "None")
-	//kscan模块
+	//jkscan模块
 	sflag.StringSpliceVar(&o.Target, "target")
 	sflag.StringSpliceVar(&o.Target, "t")
 	sflag.IntSpliceVar(&o.Port, "port")

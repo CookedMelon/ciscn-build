@@ -1,7 +1,7 @@
 package core
 
 import (
-	"kscan/lib/grdp/glog"
+	"jkscan/lib/grdp/glog"
 	"unsafe"
 )
 

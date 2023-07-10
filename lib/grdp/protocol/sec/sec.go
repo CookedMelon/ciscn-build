@@ -14,14 +14,14 @@ import (
 
 	"github.com/lunixbochs/struc"
 
-	"kscan/lib/grdp/protocol/nla"
+	"jkscan/lib/grdp/protocol/nla"
 
-	"kscan/lib/grdp/core"
-	"kscan/lib/grdp/emission"
-	"kscan/lib/grdp/glog"
-	"kscan/lib/grdp/protocol/lic"
-	"kscan/lib/grdp/protocol/t125"
-	"kscan/lib/grdp/protocol/t125/gcc"
+	"jkscan/lib/grdp/core"
+	"jkscan/lib/grdp/emission"
+	"jkscan/lib/grdp/glog"
+	"jkscan/lib/grdp/protocol/lic"
+	"jkscan/lib/grdp/protocol/t125"
+	"jkscan/lib/grdp/protocol/t125/gcc"
 )
 
 /**

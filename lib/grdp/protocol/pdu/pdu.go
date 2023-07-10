@@ -6,10 +6,10 @@ import (
 	"errors"
 	"fmt"
 
-	"kscan/lib/grdp/core"
-	"kscan/lib/grdp/emission"
-	"kscan/lib/grdp/glog"
-	"kscan/lib/grdp/protocol/t125/gcc"
+	"jkscan/lib/grdp/core"
+	"jkscan/lib/grdp/emission"
+	"jkscan/lib/grdp/glog"
+	"jkscan/lib/grdp/protocol/t125/gcc"
 )
 
 type PDULayer struct {

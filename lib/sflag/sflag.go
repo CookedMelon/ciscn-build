@@ -4,7 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"kscan/lib/misc"
+	"jkscan/lib/misc"
 	"os"
 	"regexp"
 	"strconv"

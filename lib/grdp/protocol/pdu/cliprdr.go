@@ -3,8 +3,8 @@ package pdu
 import (
 	"bytes"
 
-	"kscan/lib/grdp/core"
-	"kscan/lib/grdp/glog"
+	"jkscan/lib/grdp/core"
+	"jkscan/lib/grdp/glog"
 )
 
 /**
@@ -92,11 +92,13 @@ func NewCliprdrPDUHeader(mType, flags uint16, ln uint32) *CliprdrPDUHeader {
 	}
 }
 
-/*func (c *CliprdrPDU) serialize() []byte {
-	b := &bytes.Buffer{}
+/*
+	func (c *CliprdrPDU) serialize() []byte {
+		b := &bytes.Buffer{}
 
-	return b.Bytes()
-}
+		return b.Bytes()
+	}
+
 func (c *CliprdrPDU) SendCliprdrGeneralCapability() {
 
 }

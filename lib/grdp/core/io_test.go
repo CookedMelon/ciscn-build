@@ -5,7 +5,7 @@ import (
 	"encoding/hex"
 	"testing"
 
-	"kscan/lib/grdp/core"
+	"jkscan/lib/grdp/core"
 )
 
 func TestWriteUInt16LE(t *testing.T) {

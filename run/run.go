@@ -2,12 +2,12 @@ package run
 
 import (
 	"fmt"
-	"kscan/app"
-	"kscan/core/scanner"
-	"kscan/core/slog"
-	"kscan/lib/color"
-	"kscan/lib/misc"
-	"kscan/lib/uri"
+	"jkscan/app"
+	"jkscan/core/scanner"
+	"jkscan/core/slog"
+	"jkscan/lib/color"
+	"jkscan/lib/misc"
+	"jkscan/lib/uri"
 	"net"
 	"net/http"
 	"net/url"
@@ -23,6 +23,8 @@ import (
 	"github.com/lcvvvv/simplehttp"
 	"github.com/lcvvvv/stdio/chinese"
 )
+
+const file_path = "output.json"
 
 func Start() {
 	//启用看门狗函数定时输出负载情况

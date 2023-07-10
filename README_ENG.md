@@ -1,10 +1,10 @@
-# Kscan - Simple Asset Mapping Tool
-<a href="https://github.com/lcvvvv/kscan"><img alt="Release" src="https://img.shields.io/badge/golang-1.6+-9cf"></a>
-<a href="https://github.com/lcvvvv/kscan"><img alt="Release" src="https://img.shields.io/badge/kscan-1.76-ff69b4"></a>
-<a href="https://github.com/lcvvvv/kscan"><img alt="Release" src="https://img.shields.io/badge/LICENSE-GPL-important"></a>
-![GitHub Repo stars](https://img.shields.io/github/stars/lcvvvv/kscan?color=success)
-![GitHub forks](https://img.shields.io/github/forks/lcvvvv/kscan)
-![GitHub all release](https://img.shields.io/github/downloads/lcvvvv/kscan/total?color=blueviolet) 
+# jkscan - Simple Asset Mapping Tool
+<a href="https://github.com/lcvvvv/jkscan"><img alt="Release" src="https://img.shields.io/badge/golang-1.6+-9cf"></a>
+<a href="https://github.com/lcvvvv/jkscan"><img alt="Release" src="https://img.shields.io/badge/jkscan-1.76-ff69b4"></a>
+<a href="https://github.com/lcvvvv/jkscan"><img alt="Release" src="https://img.shields.io/badge/LICENSE-GPL-important"></a>
+![GitHub Repo stars](https://img.shields.io/github/stars/lcvvvv/jkscan?color=success)
+![GitHub forks](https://img.shields.io/github/forks/lcvvvv/jkscan)
+![GitHub all release](https://img.shields.io/github/downloads/lcvvvv/jkscan/total?color=blueviolet) 
 
 [[中文 Readme]][url-doczh]
 |
@@ -37,27 +37,27 @@ Unless you have fully read, fully understood and accepted all the terms of this 
 |#| \#\\#####/ \#####/#/     \#\#| \#|
 ```
 
-Kscan is an asset mapping tool that can perform port scanning, TCP fingerprinting and banner capture for specified assets, and obtain as much port information as possible without sending more packets. It can perform automatic brute force cracking on scan results, and is the first open source RDP brute force cracking tool on the go platform.
+jkscan is an asset mapping tool that can perform port scanning, TCP fingerprinting and banner capture for specified assets, and obtain as much port information as possible without sending more packets. It can perform automatic brute force cracking on scan results, and is the first open source RDP brute force cracking tool on the go platform.
 
 ## 2 Foreword
 
-At present, there are actually many tools for asset scanning, fingerprint identification, and vulnerability detection, and there are many great tools, but Kscan actually has many different ideas.
+At present, there are actually many tools for asset scanning, fingerprint identification, and vulnerability detection, and there are many great tools, but jkscan actually has many different ideas.
 
-- Kscan hopes to accept a variety of input formats, and there is no need to classify the scanned objects before use, such as IP, or URL address, etc. This is undoubtedly an unnecessary workload for users, and all entries can be normal Input and identification. If it is a URL address, the path will be reserved for detection. If it is only IP:PORT, the port will be prioritized for protocol identification. Currently Kscan supports three input methods (-t,--target|-f,--fofa|--spy).
+- jkscan hopes to accept a variety of input formats, and there is no need to classify the scanned objects before use, such as IP, or URL address, etc. This is undoubtedly an unnecessary workload for users, and all entries can be normal Input and identification. If it is a URL address, the path will be reserved for detection. If it is only IP:PORT, the port will be prioritized for protocol identification. Currently jkscan supports three input methods (-t,--target|-f,--fofa|--spy).
 
-- Kscan does not seek efficiency by comparing port numbers with common protocols to confirm port protocols, nor does it only detect WEB assets. In this regard, Kscan pays more attention to accuracy and comprehensiveness, and only high-accuracy protocol identification , in order to provide good detection conditions for subsequent application layer identification.
+- jkscan does not seek efficiency by comparing port numbers with common protocols to confirm port protocols, nor does it only detect WEB assets. In this regard, jkscan pays more attention to accuracy and comprehensiveness, and only high-accuracy protocol identification , in order to provide good detection conditions for subsequent application layer identification.
 
-- Kscan does not use a modular approach to do pure function stacking, such as a module obtains the title separately, a module obtains SMB information separately, etc., runs independently, and outputs independently, but outputs asset information in units of ports, such as ports If the protocol is HTTP, subsequent fingerprinting and title acquisition will be performed automatically. If the port protocol is RPC, it will try to obtain the host name, etc.
+- jkscan does not use a modular approach to do pure function stacking, such as a module obtains the title separately, a module obtains SMB information separately, etc., runs independently, and outputs independently, but outputs asset information in units of ports, such as ports If the protocol is HTTP, subsequent fingerprinting and title acquisition will be performed automatically. If the port protocol is RPC, it will try to obtain the host name, etc.
 
-![kscan logic diagram.drawio](assets/kscan逻辑图.drawio.png)
+![jkscan logic diagram.drawio](assets/jkscan逻辑图.drawio.png)
 
 ## 3 Compilation Manual
 
-[Compiler Manual](https://github.com/lcvvvv/kscan/wiki/%E7%BC%96%E8%AF%91)
+[Compiler Manual](https://github.com/lcvvvv/jkscan/wiki/%E7%BC%96%E8%AF%91)
 
 ## 4 Get started
 
-Kscan currently has 3 ways to input targets
+jkscan currently has 3 ways to input targets
 
 - -t/--target can add the --check parameter to fingerprint only the specified target port, otherwise the target will be port scanned and fingerprinted
 
@@ -85,7 +85,7 @@ fofa search keywords: will directly return fofa search results
 ## 5 Instructions
 
 ```
-usage: kscan [-h,--help,--fofa-syntax] (-t,--target,-f,--fofa,--spy) [-p,--port|--top] [-o,--output] [-oJ] [--proxy] [--threads] [--path] [--host] [--timeout] [-Pn] [-Cn] [-sV] [--check] [--encoding] [--hydra] [hydra options] [fofa options]
+usage: jkscan [-h,--help,--fofa-syntax] (-t,--target,-f,--fofa,--spy) [-p,--port|--top] [-o,--output] [-oJ] [--proxy] [--threads] [--path] [--host] [--timeout] [-Pn] [-Cn] [-sV] [--check] [--encoding] [--hydra] [hydra options] [fofa options]
 
 
 optional arguments:
@@ -171,7 +171,7 @@ The function is not complicated, the others are explored by themselves
 
 ## 8 End of article
 
-Github project address (bugs, requirements, rules are welcome to submit): https://github.com/lcvvvv/kscan
+Github project address (bugs, requirements, rules are welcome to submit): https://github.com/lcvvvv/jkscan
 
 [url-doczh]: README.md
 [url-docen]: README_ENG.md

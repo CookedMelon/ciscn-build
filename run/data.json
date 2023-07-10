@@ -1,0 +1,14 @@
+{
+    "192.168.1.0": {
+        "services": {},
+        "deviceinfo": "new device",
+        "honeypot": [],
+        "timestamp": "2023-07-10 19:25:55"
+    },
+    "192.168.1.1": {
+        "services": {},
+        "deviceinfo": "new device",
+        "honeypot": [],
+        "timestamp": "2023-07-10 19:26:33"
+    }
+}

@@ -6,12 +6,12 @@ import (
 	"errors"
 	"fmt"
 
-	"kscan/lib/grdp/glog"
+	"jkscan/lib/grdp/glog"
 
 	"github.com/lunixbochs/struc"
-	"kscan/lib/grdp/core"
-	"kscan/lib/grdp/emission"
-	"kscan/lib/grdp/protocol/tpkt"
+	"jkscan/lib/grdp/core"
+	"jkscan/lib/grdp/emission"
+	"jkscan/lib/grdp/protocol/tpkt"
 )
 
 // take idea from https://github.com/Madnikulin50/gordp

@@ -3,11 +3,11 @@ package main
 import (
 	"embed"
 	"fmt"
-	"kscan/app"
-	"kscan/core/slog"
-	"kscan/core/tips"
-	"kscan/lib/color"
-	"kscan/run"
+	"jkscan/app"
+	"jkscan/core/slog"
+	"jkscan/core/tips"
+	"jkscan/lib/color"
+	"jkscan/run"
 	"os"
 	"runtime"
 	"time"
@@ -19,18 +19,15 @@ import (
 )
 
 // logo信息
-// const logo = `
-//      _   __
-//     /#| /#/
-//     |#|/#/  _____  _____     *     _   _
-//     |#.#/  /Edge/ /Forum\   /#\   /#\ /#\
-//     |##|  |#|____ |#|      /Kv2\  |##\|#|
-//     |#.#\  \r0cky\|#|     /#/_\#\ |#.#.#|
-//     |#|\#\/\___|#||#|____/#/Rui\#\|#|\##|
-//     \#| \#\lcvvvv/ \aels/#/ v1.87#\#/ \#/
-
-// `
-const logo = ``
+const logo = `
+    8  8   8  8""""8 8""""8 8""""8 8"""8 
+    8  8   8  8      8    " 8    8 8   8 
+    8e 8eee8e 8eeeee 8e     8eeee8 8e  8 
+    88 88   8     88 88     88   8 88  8 
+e   88 88   8 e   88 88   e 88   8 88  8 
+8eee88 88   8 8eee88 88eee8 88   8 88  8 
+                                         
+`
 
 // 帮助信息
 const help = `
@@ -40,17 +37,17 @@ optional arguments:
   -t , --target   指定探测对象
 `
 
-const usage = "usage: kscan [-h,--help] (-t,--target) [options]\n\n"
+const usage = "usage: jkscan [-h,--help] (-t,--target) [options]\n\n"
 
 func main() {
 	startTime := time.Now()
 
 	//环境初始化
 	Init()
-	//kscan模块启动
+	//jkscan模块启动
 	if len(app.Setting.Target) > 0 {
 		//扫描模块初始化
-		InitKscan()
+		Initjkscan()
 		//开始扫描
 		run.Start()
 	}
@@ -76,7 +73,7 @@ func Init() {
 		slog.SetLevel(slog.INFO)
 	}
 	//color包初始化
-	if os.Getenv("KSCAN_COLOR") == "1" {
+	if os.Getenv("jkscan_COLOR") == "1" {
 		color.Enabled()
 	}
 	if app.Args.CloseColor == true {
@@ -93,7 +90,7 @@ func Init() {
 	fmt.Println("Tips:", tips.GetTips())
 	slog.Println(slog.INFO, "当前环境为：", runtime.GOOS, ", 输出编码为：", app.Setting.Encoding)
 	if runtime.GOOS == "windows" && app.Setting.CloseColor == true {
-		slog.Println(slog.INFO, "在Windows系统下，默认不会开启颜色展示，可以通过添加环境变量开启哦：KSCAN_COLOR=TRUE")
+		slog.Println(slog.INFO, "在Windows系统下，默认不会开启颜色展示，可以通过添加环境变量开启哦：jkscan_COLOR=TRUE")
 	}
 }
 
@@ -105,7 +102,7 @@ const (
 	fingerprintPath = "static/fingerprint.txt"
 )
 
-func InitKscan() {
+func Initjkscan() {
 	//HTTP指纹库初始化
 	fs, _ := fingerprintEmbed.Open(fingerprintPath)
 	if n, err := appfinger.InitDatabaseFS(fs); err != nil {

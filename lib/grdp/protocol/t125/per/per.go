@@ -4,9 +4,9 @@ import (
 	"bytes"
 	"io"
 
-	"kscan/lib/grdp/glog"
+	"jkscan/lib/grdp/glog"
 
-	"kscan/lib/grdp/core"
+	"jkscan/lib/grdp/core"
 )
 
 func ReadEnumerates(r io.Reader) (uint8, error) {

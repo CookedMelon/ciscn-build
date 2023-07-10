@@ -5,7 +5,7 @@ import (
 	"github.com/lcvvvv/stdio"
 	"io"
 	"io/ioutil"
-	"kscan/lib/color"
+	"jkscan/lib/color"
 	"log"
 	"os"
 	"runtime"

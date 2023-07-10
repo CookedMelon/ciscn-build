@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 
-	"kscan/lib/grdp/core"
+	"jkscan/lib/grdp/core"
 )
 
 const (

@@ -1,10 +1,10 @@
-# Kscan-简单的资产测绘工具
-<a href="https://github.com/lcvvvv/kscan"><img alt="Release" src="https://img.shields.io/badge/golang-1.8+-9cf"></a>
-<a href="https://github.com/lcvvvv/kscan"><img alt="Release" src="https://img.shields.io/badge/kscan-1.86-ff69b4"></a>
-<a href="https://github.com/lcvvvv/kscan"><img alt="Release" src="https://img.shields.io/badge/LICENSE-GPL-important"></a>
-![GitHub Repo stars](https://img.shields.io/github/stars/lcvvvv/kscan?color=success)
-![GitHub forks](https://img.shields.io/github/forks/lcvvvv/kscan)
-![GitHub all release](https://img.shields.io/github/downloads/lcvvvv/kscan/total?color=blueviolet) 
+# jkscan-简单的资产测绘工具
+<a href="https://github.com/lcvvvv/jkscan"><img alt="Release" src="https://img.shields.io/badge/golang-1.8+-9cf"></a>
+<a href="https://github.com/lcvvvv/jkscan"><img alt="Release" src="https://img.shields.io/badge/jkscan-1.86-ff69b4"></a>
+<a href="https://github.com/lcvvvv/jkscan"><img alt="Release" src="https://img.shields.io/badge/LICENSE-GPL-important"></a>
+![GitHub Repo stars](https://img.shields.io/github/stars/lcvvvv/jkscan?color=success)
+![GitHub forks](https://img.shields.io/github/forks/lcvvvv/jkscan)
+![GitHub all release](https://img.shields.io/github/downloads/lcvvvv/jkscan/total?color=blueviolet) 
 
 [[中文 Readme]][url-doczh]
 |
@@ -38,27 +38,27 @@
 	
 ```
 
-Kscan是一款纯go开发的全方位扫描器，具备端口扫描、协议检测、指纹识别，暴力破解等功能。支持协议1200+，协议指纹10000+，应用指纹20000+，暴力破解协议10余种。 
+jkscan是一款纯go开发的全方位扫描器，具备端口扫描、协议检测、指纹识别，暴力破解等功能。支持协议1200+，协议指纹10000+，应用指纹20000+，暴力破解协议10余种。 
 
 ## 2 写在前面
 
-目前类似的资产扫描、指纹识别、漏洞检测的工具其实已经非常多了，也不乏有很棒的工具，但是Kscan其实有很多不同的想法。
+目前类似的资产扫描、指纹识别、漏洞检测的工具其实已经非常多了，也不乏有很棒的工具，但是jkscan其实有很多不同的想法。
 
-- Kscan希望能够接受多种输入格式，无需在使用之前对扫描对象进行分类，比如区分为IP，还是URL地址等，这对于使用者来说无疑是徒增工作量，所有的条目，均能正常输入和识别，若是URL地址，则会保留路径进行检测，若只是IP:PORT，则会优先对该端口进行协议识别。目前Kscan支持三种输入方式（-t,--target|-f,--fofa|--spy）。
+- jkscan希望能够接受多种输入格式，无需在使用之前对扫描对象进行分类，比如区分为IP，还是URL地址等，这对于使用者来说无疑是徒增工作量，所有的条目，均能正常输入和识别，若是URL地址，则会保留路径进行检测，若只是IP:PORT，则会优先对该端口进行协议识别。目前jkscan支持三种输入方式（-t,--target|-f,--fofa|--spy）。
 
-- Kscan没有为了追求效率，而根据端口号与常见协议进行比对来确认端口协议，也不是只检测WEB资产，在这方面，Kscan则更加看重准确性和全面性，只有高准确性的协议识别，才能为后续的应用层识别，提供良好的检测条件。
+- jkscan没有为了追求效率，而根据端口号与常见协议进行比对来确认端口协议，也不是只检测WEB资产，在这方面，jkscan则更加看重准确性和全面性，只有高准确性的协议识别，才能为后续的应用层识别，提供良好的检测条件。
 
-- Kscan不是采用模块化的方式做单纯的功能堆叠，比如某个模块单独获取标题，某个模块单独获取SMB信息等等，独立运行，独立输出，而是以端口为单位输出资产信息，比如端口协议为HTTP，则会自动化进行后续的指纹识别、标题获取，端口协议为RPC，则会尝试获取主机名等等。
+- jkscan不是采用模块化的方式做单纯的功能堆叠，比如某个模块单独获取标题，某个模块单独获取SMB信息等等，独立运行，独立输出，而是以端口为单位输出资产信息，比如端口协议为HTTP，则会自动化进行后续的指纹识别、标题获取，端口协议为RPC，则会尝试获取主机名等等。
 
-![kscan逻辑图.drawio](assets/kscan逻辑图.drawio.png)
+![jkscan逻辑图.drawio](assets/jkscan逻辑图.drawio.png)
 
 ## 3 编译手册
 
-[编译手册](https://github.com/lcvvvv/kscan/wiki/%E7%BC%96%E8%AF%91)
+[编译手册](https://github.com/lcvvvv/jkscan/wiki/%E7%BC%96%E8%AF%91)
 
 ## 4 开始吧
 
-Kscan目前具备3种输入目标的方式
+jkscan目前具备3种输入目标的方式
 
 - -t/--target 可添加--check参数，只对指定的目标端口进行指纹识别，否则将对目标进行端口扫描和指纹识别
 
@@ -86,7 +86,7 @@ fofa搜索关键字：将直接返回fofa搜索结果
 ## 5 使用方法
 
 ```
-usage: kscan [-h,--help,--fofa-syntax] (-t,--target,-f,--fofa,--spy) [-p,--port|--top] [-o,--output] [-oJ] [--proxy] [--threads] [--path] [--host] [--timeout] [-Pn] [-Cn] [-sV] [--check] [--encoding] [--hydra] [hydra options] [fofa options]
+usage: jkscan [-h,--help,--fofa-syntax] (-t,--target,-f,--fofa,--spy) [-p,--port|--top] [-o,--output] [-oJ] [--proxy] [--threads] [--path] [--host] [--timeout] [-Pn] [-Cn] [-sV] [--check] [--encoding] [--hydra] [hydra options] [fofa options]
 
 
 optional arguments:
@@ -175,7 +175,7 @@ fofa options:
 
 ## 8 文末
 
-Github项目地址（BUG、需求、规则欢迎提交）: https://github.com/lcvvvv/kscan
+Github项目地址（BUG、需求、规则欢迎提交）: https://github.com/lcvvvv/jkscan
 
 [url-doczh]: README.md
 [url-docen]: README_ENG.md

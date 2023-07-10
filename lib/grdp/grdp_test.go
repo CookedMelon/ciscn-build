@@ -2,7 +2,7 @@ package grdp
 
 import (
 	"fmt"
-	"kscan/lib/grdp/glog"
+	"jkscan/lib/grdp/glog"
 	"testing"
 )
 
