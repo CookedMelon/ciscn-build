@@ -2,14 +2,11 @@ package main
 
 import (
 	"embed"
-	"fmt"
 	"jkscan/app"
 	"jkscan/core/slog"
-	"jkscan/core/tips"
 	"jkscan/lib/color"
 	"jkscan/run"
 	"os"
-	"runtime"
 	"time"
 
 	"github.com/lcvvvv/appfinger"
@@ -86,11 +83,6 @@ func Init() {
 	//Output初始化
 	if app.Setting.Output != nil {
 		slog.SetOutput(app.Setting.Output)
-	}
-	fmt.Println("Tips:", tips.GetTips())
-	slog.Println(slog.INFO, "当前环境为：", runtime.GOOS, ", 输出编码为：", app.Setting.Encoding)
-	if runtime.GOOS == "windows" && app.Setting.CloseColor == true {
-		slog.Println(slog.INFO, "在Windows系统下，默认不会开启颜色展示，可以通过添加环境变量开启哦：jkscan_COLOR=TRUE")
 	}
 }
 
