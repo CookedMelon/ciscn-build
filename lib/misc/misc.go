@@ -223,3 +223,14 @@ func CopySlice[T any](slice []T) []T {
 	copy(v, slice)
 	return v
 }
+
+func TidyMap(m map[string]string) map[string]string {
+	var nm = make(map[string]string)
+	for key, value := range m {
+		if value == "" || key == "MatchRegexString" || key == "Response" || key == "Body" || key == "Cert" || key == "Header" {
+			continue
+		}
+		nm[key] = value
+	}
+	return nm
+}

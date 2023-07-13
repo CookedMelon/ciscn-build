@@ -438,7 +438,7 @@ func outputHandler(URL *url.URL, keyword string, m map[string]string) {
 	if jw := app.Setting.OutputJson; jw != nil {
 		sourceMap["URL"] = URL.String()
 		sourceMap["Keyword"] = keyword
-		jw.Push(sourceMap)
+		jw.Push(misc.TidyMap(sourceMap))
 	}
 	if cw := app.Setting.OutputCSV; cw != nil {
 		sourceMap["URL"] = URL.String()
