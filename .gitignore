@@ -1,0 +1,60 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, build with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Project-specific binaries
+/bin/
+/vendor/
+
+# Dependency directories (Glide, godep, dep, vndr)
+/vendor/
+/Godeps/
+/.glide/
+/.godep/
+/.dep/
+/vendor/
+/_vendor/
+
+# Go distribution
+# You might want to remove the .env file if you use goenv
+.env
+
+# IDE files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.sublime/
+.tmproj
+.tmproject
+
+# Build cache
+*.tmp
+*.bak
+
+# Testing
+*.log
+
+# OSX
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+Thumbs.db
+
+# Windows
+$RECYCLE.BIN/
+Thumbs.db
+ehthumbs.db
+Desktop.ini
