@@ -31,7 +31,7 @@ func Start() {
 	go watchDog()
 	//下发扫描任务
 	var wg = &sync.WaitGroup{}
-	wg.Add(5)
+	wg.Add(3) // 表示有三个扫描器
 	IPScanner = generateIPScanner(wg)
 	PortScanner = generatePortScanner(wg)
 	URLScanner = generateURLScanner(wg)
