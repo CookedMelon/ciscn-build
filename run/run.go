@@ -279,6 +279,18 @@ func generateURLScanner(wg *sync.WaitGroup) *scanner.URLClient {
 	return client
 }
 
+//	func outputNmapFinger(URL *url.URL, resp *gonmap.Response) {
+//		if responseFilter(resp.Raw) == true {
+//			return
+//		}
+//		finger := resp.FingerPrint
+//		m := misc.ToMap(finger)
+//		m["Response"] = resp.Raw
+//		m["IP"] = URL.Hostname()
+//		m["Port"] = URL.Port()
+//		fmt.Println("normal1")
+//		outputHandler(URL, finger.Service, m)
+//	}
 func outputNmapFinger(URL *url.URL, resp *gonmap.Response) {
 	if responseFilter(resp.Raw) == true {
 		return
@@ -289,9 +301,37 @@ func outputNmapFinger(URL *url.URL, resp *gonmap.Response) {
 	m["IP"] = URL.Hostname()
 	m["Port"] = URL.Port()
 	fmt.Println("normal1")
-	outputHandler(URL, finger.Service, m)
+	fmt.Println(URL)
+	fmt.Println(finger.Service)
+	misc.PrintMap(m)
+	fmt.Println("------------------------------")
+	// outputHandler(URL, finger.Service, m)
 }
 
+//	func outputAppFinger(URL *url.URL, banner *appfinger.Banner, finger *appfinger.FingerPrint) {
+//		if responseFilter(banner.Response, banner.Cert) == true {
+//			return
+//		}
+//		m := misc.ToMap(finger)
+//		m["Service"] = URL.Scheme
+//		m["FoundIP"] = banner.FoundIP
+//		m["Response"] = banner.Response
+//		m["Cert"] = banner.Cert
+//		m["Header"] = banner.Header
+//		m["Body"] = banner.Body
+//		m["ICP"] = banner.ICP
+//		m["FingerPrint"] = m["ProductName"]
+//		delete(m, "ProductName")
+//		m["Port"] = uri.GetURLPort(URL)
+//		if m["Port"] == "" {
+//			slog.Println(slog.WARN, "无法获取端口号：", URL)
+//		}
+//		if hostname := URL.Hostname(); uri.IsIPv4(hostname) {
+//			m["IP"] = hostname
+//		}
+//		fmt.Println("normal2")
+//		outputHandler(URL, banner.Title, m)
+//	}
 func outputAppFinger(URL *url.URL, banner *appfinger.Banner, finger *appfinger.FingerPrint) {
 	if responseFilter(banner.Response, banner.Cert) == true {
 		return
@@ -314,9 +354,27 @@ func outputAppFinger(URL *url.URL, banner *appfinger.Banner, finger *appfinger.F
 		m["IP"] = hostname
 	}
 	fmt.Println("normal2")
-	outputHandler(URL, banner.Title, m)
+	fmt.Println(URL)
+	fmt.Println(banner.Title)
+	misc.PrintMap(m)
+	// outputHandler(URL, banner.Title, m)
+	fmt.Println("------------------------------")
 }
 
+//	func outputUnknownResponse(addr net.IP, port int, response string) {
+//		if responseFilter(response) == true {
+//			return
+//		}
+//		//输出结果
+//		fmt.Println("Unknown")
+//		target := fmt.Sprintf("unknown://%s:%d", addr.String(), port)
+//		URL, _ := url.Parse(target)
+//		outputHandler(URL, "无法识别该协议", map[string]string{
+//			"Response": response,
+//			"IP":       URL.Hostname(),
+//			"Port":     strconv.Itoa(port),
+//		})
+//	}
 func outputUnknownResponse(addr net.IP, port int, response string) {
 	if responseFilter(response) == true {
 		return
@@ -325,25 +383,51 @@ func outputUnknownResponse(addr net.IP, port int, response string) {
 	fmt.Println("Unknown")
 	target := fmt.Sprintf("unknown://%s:%d", addr.String(), port)
 	URL, _ := url.Parse(target)
-	outputHandler(URL, "无法识别该协议", map[string]string{
+	fmt.Println(URL)
+	fmt.Println("无法识别该协议")
+	misc.PrintMap(map[string]string{
 		"Response": response,
 		"IP":       URL.Hostname(),
 		"Port":     strconv.Itoa(port),
 	})
+	// outputHandler(URL, "无法识别该协议", map[string]string{
+	// 	"Response": response,
+	// 	"IP":       URL.Hostname(),
+	// 	"Port":     strconv.Itoa(port),
+	// })
+	fmt.Println("------------------------------")
 }
 
+//	func outputOpenResponse(addr net.IP, port int) {
+//		// //输出结果
+//		fmt.Println("empty")
+//		protocol := gonmap.GuessProtocol(port) //获取协议
+//		target := fmt.Sprintf("%s://%s:%d", protocol, addr.String(), port)
+//		URL, _ := url.Parse(target)
+//		outputHandler(URL, "response is empty2", map[string]string{
+//			"IP":   URL.Hostname(),
+//			"Port": strconv.Itoa(port),
+//		})
+//	}
 func outputOpenResponse(addr net.IP, port int) {
 	// //输出结果
-	// fmt.Println("empty")
-	// protocol := gonmap.GuessProtocol(port) //获取协议
-	// target := fmt.Sprintf("%s://%s:%d", protocol, addr.String(), port)
-	// URL, _ := url.Parse(target)
+	fmt.Println("empty")
+	protocol := gonmap.GuessProtocol(port) //获取协议
+	target := fmt.Sprintf("%s://%s:%d", protocol, addr.String(), port)
+	URL, _ := url.Parse(target)
+	fmt.Println(URL)
+	fmt.Println("response is empty2")
+	misc.PrintMap(
+		map[string]string{
+			"IP":   URL.Hostname(),
+			"Port": strconv.Itoa(port),
+		})
 	// outputHandler(URL, "response is empty2", map[string]string{
 	// 	"IP":   URL.Hostname(),
 	// 	"Port": strconv.Itoa(port),
 	// })
+	fmt.Println("------------------------------")
 }
-
 func responseFilter(strArgs ...string) bool {
 	var match = app.Setting.Match
 	var notMatch = app.Setting.NotMatch
@@ -434,6 +518,10 @@ func outputHandler(URL *url.URL, keyword string, m map[string]string) {
 	format := "%-30v %-" + strconv.Itoa(misc.AutoWidth(color.Clear(keyword), 26+color.Count(keyword))) + "v %s"
 	printStr := fmt.Sprintf(format, URL.String(), keyword, fingerPrint)
 	slog.Println(slog.DATA, printStr)
+	// 输出
+	sourceMap["URL"] = URL.String()
+	sourceMap["Keyword"] = keyword
+	misc.PrintMap(m)
 
 	if jw := app.Setting.OutputJson; jw != nil {
 		sourceMap["URL"] = URL.String()

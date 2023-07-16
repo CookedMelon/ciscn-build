@@ -9,6 +9,19 @@ import (
 	"strings"
 )
 
+var protocol_list = []string{
+	"ssh",
+	"http",
+	"https",
+	"rtsp",
+	"ftp",
+	"telnet",
+	"amqp",
+	"mongodb",
+	"redis",
+	"mysql",
+}
+
 func IsDuplicate[T any](slice []T, val T) bool {
 	for _, item := range slice {
 		if fmt.Sprint(item) == fmt.Sprint(val) {
@@ -233,4 +246,35 @@ func TidyMap(m map[string]string) map[string]string {
 		nm[key] = value
 	}
 	return nm
+}
+func PrintMap(m map[string]string) {
+	fmt.Println("map:")
+	for key, value := range m {
+		fmt.Println(key, ":", value)
+	}
+}
+func GetProtocol(m map[string]string) string {
+	var protocol string
+	// 获取m的“URL”字段的://前的字符内容
+	if strings.Contains(m["URL"], "://") {
+		protocol = strings.Split(m["URL"], "://")[0]
+		//如果protocol在protocol_list中，则返回protocol
+		if IsDuplicate(protocol_list, protocol) {
+			return protocol
+		} else {
+			return ""
+		}
+	}
+	return ""
+}
+func GetService(m map[string]string) []string {
+	var answer = make([]string, 0)
+	//识别openssh
+	// ...
+	//识别windows
+	//...
+	//识别Jetty
+	//...
+
+	return answer
 }
