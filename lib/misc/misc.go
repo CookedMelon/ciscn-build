@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/rand"
 	"reflect"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -270,9 +271,46 @@ func GetProtocol(m map[string]string) string {
 func GetService(m map[string]string) []string {
 	var answer = make([]string, 0)
 	//识别openssh
-	// ...
-	//识别windows
-	//...
+	//将response中的SSH-2.0-OpenSSH_8.0转为openssh/8.0，如果版本号匹配失败(没匹配到SSH-2.0-OpenSSH_)则为openssh/N
+	//ssh之后得改下，不能用split这种
+
+	if strings.Contains(m["Response"], "SSH-2.0-OpenSSH_") {
+		fmt.Println("find openssh:", m["Response"])
+		openssh := strings.Split(m["Response"], "SSH-2.0-OpenSSH_")[1]
+		openssh = strings.Split(openssh, " ")[0]
+		answer = append(answer, "openssh/"+openssh)
+	}
+	if strings.Contains(m["Response"], "OpenSSH") && !strings.Contains(m["Response"], "SSH-2.0-OpenSSH_") {
+		fmt.Println("find openssh但是无版本:", m["Response"])
+		answer = append(answer, "openssh/N")
+	}
+
+	fmt.Println("find openssh:", answer)
+	// 识别wordpress，从Body中提取content="WordPress 6.0.5"字样为workpress/6.0.5，若未匹配到则为workpress/N
+	if strings.Contains(m["FingerPrint"], "WordPress") {
+		fmt.Println("find wordpress:", m["FingerPrint"])
+		re := regexp.MustCompile(`WordPress (\d+\.\d+(\.\d+){0,2})`)
+		matches := re.FindAllString(m["Body"], -1)
+
+		if len(matches) > 0 {
+			answer = append(answer, strings.ToLower(matches[0]))
+		} else {
+			answer = append(answer, "wordpress/N")
+		}
+	}
+	//识别windows,FingerPrint中出现即可，出现Windows CE 6.00等记为windows/6.00，否则记为windows/N
+	if strings.Contains(m["FingerPrint"], "Windows") {
+		fmt.Println("find windows:", m["FingerPrint"])
+		re := regexp.MustCompile(`Windows CE (\d+\.\d+)`)
+		matches := re.FindAllString(m["FingerPrint"], -1)
+		if len(matches) > 0 {
+			var temp = strings.ToLower(matches[0])
+			answer = append(answer, strings.Replace(temp, " ce ", "/", 1))
+		} else {
+			answer = append(answer, "windows/N")
+		}
+	}
+
 	//识别Jetty
 	//...
 
