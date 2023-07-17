@@ -268,6 +268,8 @@ func GetProtocol(m map[string]string) string {
 	}
 	return ""
 }
+
+// 返回值{"ip","port","protocol","service_app","deviceinfo","honeypot"}
 func GetService(m map[string]string) []string {
 	var answer = make([]string, 0)
 	//识别openssh
