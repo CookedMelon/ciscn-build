@@ -305,7 +305,6 @@ func outputNmapFinger(URL *url.URL, resp *gonmap.Response) {
 	fmt.Println(finger.Service)
 	misc.PrintMap(m)
 	fmt.Println("------------------------------")
-	// outputHandler(URL, finger.Service, m)
 }
 
 //	func outputAppFinger(URL *url.URL, banner *appfinger.Banner, finger *appfinger.FingerPrint) {

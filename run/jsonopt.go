@@ -4,14 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"time"
 )
 
 type Data struct {
-	Services   map[int]Service `json:"services"`
-	DeviceInfo string          `json:"deviceinfo"`
-	Honeypot   []string        `json:"honeypot"`
-	Timestamp  string          `json:"timestamp"`
+	Services   []Service `json:"services"`
+	DeviceInfo string    `json:"deviceinfo"`
+	Honeypot   []string  `json:"honeypot"`
 }
 type Service struct {
 	Port       int      `json:"port"`
@@ -62,10 +60,9 @@ func Addip(ip string, jsonData map[string]Data) {
 	if !exists {
 		// IP地址不存在，创建新的条目
 		newData := Data{
-			Services:   make(map[int]Service),
+			Services:   []Service{},
 			DeviceInfo: "new device",
 			Honeypot:   []string{},
-			Timestamp:  time.Now().Format("2006-01-02 15:04:05"),
 		}
 		fmt.Println(newData)
 		jsonData[ip] = newData
@@ -111,33 +108,33 @@ func AddService(port int, ip, protocol, app string) {
 	if !exists {
 		// IP地址不存在，创建新的条目
 		data = Data{
-			Services: make(map[int]Service),
+			Services: []Service{},
 		}
 		jsonData[ip] = data
 	}
 
 	// 检查端口是否存在于服务中
-	service, exists := data.Services[port]
-	if exists {
-		// 端口已存在
-		if service.Port != port {
-			// 如果app不同，将app添加到ServiceApp字段中
-			service.ServiceApp = append(service.ServiceApp, app)
-			data.Services[port] = service
-		} else {
-			// 如果app相同，则不进行任何操作
-			fmt.Println("该IP地址和端口的服务已存在。")
-			return
-		}
-	} else {
-		// 端口不存在，创建新的服务
-		newService := Service{
-			Port:       port,
-			Protocol:   protocol,
-			ServiceApp: []string{app},
-		}
-		data.Services[port] = newService
-	}
+	// service, exists := data.Services[port]
+	// if exists {
+	// 	// 端口已存在
+	// 	if service.Port != port {
+	// 		// 如果app不同，将app添加到ServiceApp字段中
+	// 		service.ServiceApp = append(service.ServiceApp, app)
+	// 		data.Services[port] = service
+	// 	} else {
+	// 		// 如果app相同，则不进行任何操作
+	// 		fmt.Println("该IP地址和端口的服务已存在。")
+	// 		return
+	// 	}
+	// } else {
+	// 端口不存在，创建新的服务
+	// newService := Service{
+	// 	Port:       port,
+	// 	Protocol:   protocol,
+	// 	ServiceApp: []string{app},
+	// }
+	// data.Services[port] = newService
+	// }
 
 	// 将更新后的JSON数据写入文本文件
 	updatedJSON, err := json.MarshalIndent(jsonData, "", "    ")
@@ -153,4 +150,74 @@ func AddService(port int, ip, protocol, app string) {
 	}
 
 	fmt.Println("已向JSON数据添加新的服务信息。")
+}
+
+/*
+@author: xiongsp
+
+@description: 添加数据到data.json
+
+@usage: Add(ip, addData)
+
+- ip: IP地址
+
+- addData: 要添加的数据，类型为Data，差量更新
+*/
+func Add(ip string, addData Data) {
+	// 检查IP地址是否存在于JSON数据中
+	jsonData := GetJson()
+	_, exists := jsonData[ip]
+	if !exists {
+		// IP地址不存在，创建新的条目
+		jsonData[ip] = addData
+		fmt.Println("已向JSON数据添加新的条目。")
+	} else {
+		// IP地址已存在
+		// 进行差量更新
+		oldData := jsonData[ip]
+		resuldData := Data{}
+		// 设备信息
+		if addData.DeviceInfo != "" {
+			resuldData.DeviceInfo = addData.DeviceInfo
+		} else {
+			resuldData.DeviceInfo = oldData.DeviceInfo
+		}
+		// 蜜罐信息，二者合并
+		tmpHoneypot := make(map[string]bool)
+		for _, v := range oldData.Honeypot {
+			tmpHoneypot[v] = true
+		}
+		for _, v := range addData.Honeypot {
+			tmpHoneypot[v] = true
+		}
+		for k := range tmpHoneypot {
+			resuldData.Honeypot = append(resuldData.Honeypot, k)
+		}
+		// 服务信息，二者合并
+		tmpService := make(map[string]Service)
+		for _, v := range oldData.Services {
+			tmpService[fmt.Sprintf("%s%d", v.Protocol, v.Port)] = v
+		}
+		for _, v := range addData.Services {
+			tmpService[fmt.Sprintf("%s%d", v.Protocol, v.Port)] = v
+		}
+		for _, v := range tmpService {
+			resuldData.Services = append(resuldData.Services, v)
+		}
+		jsonData[ip] = resuldData
+		fmt.Println("已更新JSON数据。")
+	}
+
+	// 将更新后的JSON数据写入文本文件
+	updatedJSON, err := json.MarshalIndent(jsonData, "", "    ")
+	if err != nil {
+		fmt.Println("无法转换为JSON：", err)
+		return
+	}
+
+	err = ioutil.WriteFile("data.json", updatedJSON, 0644)
+	if err != nil {
+		fmt.Println("无法写入文件：", err)
+		return
+	}
 }
