@@ -273,19 +273,25 @@ func GetService(m map[string]string) []string {
 	//识别openssh
 	//将response中的SSH-2.0-OpenSSH_8.0转为openssh/8.0，如果版本号匹配失败(没匹配到SSH-2.0-OpenSSH_)则为openssh/N
 	//ssh之后得改下，不能用split这种
-
-	if strings.Contains(m["Response"], "SSH-2.0-OpenSSH_") {
+	re := regexp.MustCompile(`SSH-2\.0-OpenSSH_([\d\.]+)`)
+	match := re.FindStringSubmatch(m["Response"])
+	if match != nil {
 		fmt.Println("find openssh:", m["Response"])
-		openssh := strings.Split(m["Response"], "SSH-2.0-OpenSSH_")[1]
-		openssh = strings.Split(openssh, " ")[0]
-		answer = append(answer, "openssh/"+openssh)
+		if len(match) < 2 {
+			if regexp.MustCompile(`OpenSSH`).FindString(m["Response"]) != "" {
+				answer = append(answer, "openssh/N")
+			}
+			answer = append(answer, "openssh/N")
+		}
+		// 如果匹配到 "SSH-2.0-OpenSSH_(数字小数点组合)"，则返回 "openssh/(数字小数点组合)"
+		answer = append(answer, "openssh/"+match[1])
 	}
 	if strings.Contains(m["Response"], "OpenSSH") && !strings.Contains(m["Response"], "SSH-2.0-OpenSSH_") {
 		fmt.Println("find openssh但是无版本:", m["Response"])
 		answer = append(answer, "openssh/N")
 	}
 
-	fmt.Println("find openssh:", answer)
+	// fmt.Println("find openssh:", answer)
 	// 识别wordpress，从Body中提取content="WordPress 6.0.5"字样为workpress/6.0.5，若未匹配到则为workpress/N
 	if strings.Contains(m["FingerPrint"], "WordPress") {
 		fmt.Println("find wordpress:", m["FingerPrint"])
@@ -338,12 +344,17 @@ func GetService(m map[string]string) []string {
 	}
 	//识别debian
 	//若server中有Debian则记为debian/N，若使用正则识别出response中出现Debian-5则记为debian/5
-	re := regexp.MustCompile(`Debian-(\d+)`)
-	match := re.FindStringSubmatch(m["Response"])
+	re = regexp.MustCompile(`Debian-(\d+)`)
+	match = re.FindStringSubmatch(m["Response"])
 	if len(match) > 0 && match[1] != "" { // 如果匹配到 "Debian-数字"
 		answer = append(answer, "debian/"+match[1])
+	} else if strings.Contains(m["Server"], "Debian") {
+		answer = append(answer, "debian/N")
 	} else {
-		if strings.Contains(m["Server"], "Debian") {
+		match = re.FindStringSubmatch(m["Response"])
+		if len(match) > 0 && match[1] != "" { // 如果匹配到 "Debian-数字"
+			answer = append(answer, "debian/"+match[1])
+		} else if strings.Contains(m["Response"], "Debian") || strings.Contains(m["Response"], "debian") {
 			answer = append(answer, "debian/N")
 		}
 	}
@@ -358,16 +369,94 @@ func GetService(m map[string]string) []string {
 			answer = append(answer, "grafana/N")
 		}
 	}
-	//识别mysql
-	//将Version中的5.5.68-MariaDB记为5.5.68
-	if strings.Contains(m["Service"], "mysql") {
-		re := regexp.MustCompile(`^[\d\.]+`)
-		match := re.FindString(m["Version"])
-		if match != "" {
-			answer = append(answer, "mysql/"+match)
+	//玛德写完才发现sql不在考察范围内
+	// //识别mysql
+	// //将Version中的5.5.68-MariaDB记为5.5.68
+	// if strings.Contains(m["Service"], "mysql") {
+	// 	re := regexp.MustCompile(`^[\d\.]+`)
+	// 	match := re.FindString(m["Version"])
+	// 	if match != "" {
+	// 		answer = append(answer, "mysql/"+match)
+	// 	} else {
+	// 		answer = append(answer, "mysql/N")
+	// 	}
+	// }
+
+	//识别node.js
+	//若FingerPrint中有Node.js则记为node.js/N，若使用正则识别出Body中出现node.js v9.1.2等字样则记为node.js/9.1.2
+	if strings.Contains(m["FingerPrint"], "Node.js") {
+		re := regexp.MustCompile(`Node.js (\d+\.\d+(\.\d+){0,2})`)
+		matches := re.FindAllString(m["Body"], -1)
+		if len(matches) > 0 {
+			answer = append(answer, strings.ToLower(matches[0]))
 		} else {
-			answer = append(answer, "mysql/N")
+			answer = append(answer, "node.js/N")
 		}
+	}
+	//识别express
+	//若FingerPrint中有Express则记为express/N
+	if strings.Contains(m["FingerPrint"], "Express") {
+		answer = append(answer, "express/N")
+	}
+	//识别asp.net
+	//若X-Powered-By中有ASP.NET则记为asp.net/N
+	if strings.Contains(m["X-Powered-By"], "ASP.NET") {
+		answer = append(answer, "asp.net/N")
+	}
+	//识别php
+	//若Server中有PHP/5.4.16，记为php/5.4.16
+	re = regexp.MustCompile(`(?i)PHP/([\d\.]+)`)
+	match = re.FindStringSubmatch(m["Server"])
+	if len(match) > 0 && match[1] != "" { // 如果匹配到 "PHP/数字"
+		answer = append(answer, "php/"+match[1])
+	} else if strings.Contains(m["Server"], "PHP") {
+		answer = append(answer, "php/N")
+	}
+	//识别Microsoft-HTTPAPI
+	//若Server中有Microsoft-HTTPAPI/2.0则记为microsoft-httpapi/2.0
+	re = regexp.MustCompile(`(?i)Microsoft-HTTPAPI/([\d\.]+)`)
+	match = re.FindStringSubmatch(m["Server"])
+	if len(match) > 0 && match[1] != "" { // 如果匹配到 "Microsoft-HTTPAPI/数字"
+		answer = append(answer, "microsoft-httpapi/"+match[1])
+	} else if strings.Contains(m["Server"], "Microsoft-HTTPAPI") {
+		answer = append(answer, "microsoft-httpapi/N")
+	}
+	//识别apache
+	//若Server中有Apache/2.4.29 (Ubuntu)则记为apache/2.4.29
+	re = regexp.MustCompile(`(?i)Apache/([\d\.]+)`)
+	match = re.FindStringSubmatch(m["Server"])
+	if len(match) > 0 && match[1] != "" { // 如果匹配到 "Apache/数字"
+		answer = append(answer, "apache/"+match[1])
+	} else if strings.Contains(m["Server"], "Apache") && !strings.Contains(m["Server"], "Apache-Coyote") {
+		answer = append(answer, "apache/N")
+	}
+	//识别OpenResty
+	//若Server中有OpenResty
+	if strings.Contains(m["Server"], "OpenResty") {
+		answer = append(answer, "openresty/N")
+	}
+	//识别IIS
+	//若Server中有IIS/10.0(Microsoft-IIS/10.0)则记为iis/10.0
+	re = regexp.MustCompile(`(?i)IIS/([\d\.]+)`)
+	match = re.FindStringSubmatch(m["Server"])
+	if len(match) > 0 && match[1] != "" { // 如果匹配到 "iis/数字"
+		answer = append(answer, "iis/"+match[1])
+	} else if strings.Contains(m["Server"], "iis") {
+		answer = append(answer, "iis/N")
+	}
+	//识别OpenSSL
+	//若Server中有OpenSSL/1.1.1，则记为openssl/1.1.1
+	re = regexp.MustCompile(`(?i)OpenSSL/([\d\.]+)`)
+	match = re.FindStringSubmatch(m["Server"])
+	if len(match) > 0 && match[1] != "" { // 如果匹配到 "openssl/数字"
+		answer = append(answer, "openssl/"+match[1])
+	} else if strings.Contains(m["Server"], "openssl") {
+		answer = append(answer, "openssl/N")
+	}
+	//识别elasticsearch
+	//若Body中出现Elasticsearch，则记为elasticsearch/N
+	if strings.Contains(m["Body"], "Elasticsearch") {
+		answer = append(answer, "elasticsearch/N")
 	}
 	return answer
 }
