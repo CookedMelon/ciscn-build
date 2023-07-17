@@ -311,8 +311,63 @@ func GetService(m map[string]string) []string {
 		}
 	}
 
+	//识别nginx
+	//目前没有看到有信息能指出nginx的版本，有些时候可能能从body里找到
+	if strings.Contains(m["FingerPrint"], "nginx") {
+		answer = append(answer, "nginx/N")
+	} else if strings.Contains(m["Server"], "nginx") {
+		//如Server: nginx/1.18.0 (Ubuntu)提取为nginx/1.18.0，如Server: nginx/1.28.0提取为nginx/1.28.0
+		re := regexp.MustCompile(`nginx/(\d+\.\d+(\.\d+){0,2})`)
+		matches := re.FindAllString(m["Server"], -1)
+		if len(matches) > 0 {
+			answer = append(answer, strings.ToLower(matches[0]))
+		} else {
+			answer = append(answer, "nginx/N")
+		}
+	}
 	//识别Jetty
-	//...
-
+	//对Jetty(9.4.11.v20180605)记为Jetty/9.4.11.v20180605，对Jetty记为Jetty/N
+	if strings.Contains(m["Server"], "Jetty") {
+		re := regexp.MustCompile(`Jetty(\((.*?)\))?`)
+		matches := re.FindStringSubmatch(m["Server"])
+		if matches[2] == "" { // 如果括号内无任何文本，则替换为 "Jetty/N"
+			answer = append(answer, "jetty/N")
+		} else {
+			answer = append(answer, "jetty/"+matches[2])
+		}
+	}
+	//识别debian
+	//若server中有Debian则记为debian/N，若使用正则识别出response中出现Debian-5则记为debian/5
+	re := regexp.MustCompile(`Debian-(\d+)`)
+	match := re.FindStringSubmatch(m["Response"])
+	if len(match) > 0 && match[1] != "" { // 如果匹配到 "Debian-数字"
+		answer = append(answer, "debian/"+match[1])
+	} else {
+		if strings.Contains(m["Server"], "Debian") {
+			answer = append(answer, "debian/N")
+		}
+	}
+	//识别Grafana v9.1.2
+	//若FingerPrint中有grafana则记为grafana/N，若使用正则识别出Body中出现grafana v9.1.2等字样则记为grafana/v9.1.2
+	if strings.Contains(m["FingerPrint"], "Grafana") {
+		re := regexp.MustCompile(`Grafana (\d+\.\d+(\.\d+){0,2})`)
+		matches := re.FindAllString(m["Body"], -1)
+		if len(matches) > 0 {
+			answer = append(answer, strings.ToLower(matches[0]))
+		} else {
+			answer = append(answer, "grafana/N")
+		}
+	}
+	//识别mysql
+	//将Version中的5.5.68-MariaDB记为5.5.68
+	if strings.Contains(m["Service"], "mysql") {
+		re := regexp.MustCompile(`^[\d\.]+`)
+		match := re.FindString(m["Version"])
+		if match != "" {
+			answer = append(answer, "mysql/"+match)
+		} else {
+			answer = append(answer, "mysql/N")
+		}
+	}
 	return answer
 }
