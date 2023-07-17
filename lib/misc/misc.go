@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"math/rand"
 	"reflect"
-	"regexp"
 	"strconv"
 	"strings"
 )
@@ -23,6 +22,23 @@ var protocol_list = []string{
 	"mysql",
 }
 
+type Info struct {
+	Ip         string
+	Port       int
+	Protocol   string
+	ServiceApp []string
+	DeviceInfo []string
+	Honeypot   []string
+}
+
+func Printinfo(info Info) {
+	fmt.Println("ip:", info.Ip)
+	fmt.Println("port:", info.Port)
+	fmt.Println("protocol:", info.Protocol)
+	fmt.Println("service_app:", info.ServiceApp)
+	fmt.Println("deviceinfo:", info.DeviceInfo)
+	fmt.Println("honeypot:", info.Honeypot)
+}
 func IsDuplicate[T any](slice []T, val T) bool {
 	for _, item := range slice {
 		if fmt.Sprint(item) == fmt.Sprint(val) {
@@ -109,7 +125,15 @@ func StrRandomCut(s string, length int) string {
 		return s
 	}
 }
-
+func removeEmptyStrings(slice []string) []string {
+	newSlice := make([]string, 0)
+	for _, str := range slice {
+		if str != "" {
+			newSlice = append(newSlice, str)
+		}
+	}
+	return newSlice
+}
 func Base64Encode(keyword string) string {
 	input := []byte(keyword)
 	encodeString := base64.StdEncoding.EncodeToString(input)
@@ -270,107 +294,50 @@ func GetProtocol(m map[string]string) string {
 }
 
 // 返回值{"ip","port","protocol","service_app","deviceinfo","honeypot"}
-func GetService(m map[string]string) []string {
-	var answer = make([]string, 0)
+func GetService(m map[string]string) Info {
+	var info Info
+	var service_app = make([]string, 0)
+	//将X-Powered-By，Response，Server，FingerPrint合并为一个字符串
+	var detail_all_in_one = strings.ToLower(m["X-Powered-By"] + m["Response"] + m["Server"] + m["FingerPrint"])
 	//识别openssh
 	//将response中的SSH-2.0-OpenSSH_8.0转为openssh/8.0，如果版本号匹配失败(没匹配到SSH-2.0-OpenSSH_)则为openssh/N
 	//ssh之后得改下，不能用split这种
-	re := regexp.MustCompile(`SSH-2\.0-OpenSSH_([\d\.]+)`)
-	match := re.FindStringSubmatch(m["Response"])
-	if match != nil {
-		fmt.Println("find openssh:", m["Response"])
-		if len(match) < 2 {
-			if regexp.MustCompile(`OpenSSH`).FindString(m["Response"]) != "" {
-				answer = append(answer, "openssh/N")
-			}
-			answer = append(answer, "openssh/N")
-		}
-		// 如果匹配到 "SSH-2.0-OpenSSH_(数字小数点组合)"，则返回 "openssh/(数字小数点组合)"
-		answer = append(answer, "openssh/"+match[1])
+	if strings.Contains(detail_all_in_one, "openssh") {
+		service_app = append(service_app, GetOpenSSH(m))
 	}
-	if strings.Contains(m["Response"], "OpenSSH") && !strings.Contains(m["Response"], "SSH-2.0-OpenSSH_") {
-		fmt.Println("find openssh但是无版本:", m["Response"])
-		answer = append(answer, "openssh/N")
-	}
-
-	// fmt.Println("find openssh:", answer)
 	// 识别wordpress，从Body中提取content="WordPress 6.0.5"字样为workpress/6.0.5，若未匹配到则为workpress/N
-	if strings.Contains(m["FingerPrint"], "WordPress") {
-		fmt.Println("find wordpress:", m["FingerPrint"])
-		re := regexp.MustCompile(`WordPress (\d+\.\d+(\.\d+){0,2})`)
-		matches := re.FindAllString(m["Body"], -1)
-
-		if len(matches) > 0 {
-			answer = append(answer, strings.ToLower(matches[0]))
-		} else {
-			answer = append(answer, "wordpress/N")
-		}
+	if strings.Contains(detail_all_in_one, "wordpress") {
+		service_app = append(service_app, GetWordPress(m))
 	}
+
 	//识别windows,FingerPrint中出现即可，出现Windows CE 6.00等记为windows/6.00，否则记为windows/N
-	if strings.Contains(m["FingerPrint"], "Windows") {
-		fmt.Println("find windows:", m["FingerPrint"])
-		re := regexp.MustCompile(`Windows CE (\d+\.\d+)`)
-		matches := re.FindAllString(m["FingerPrint"], -1)
-		if len(matches) > 0 {
-			var temp = strings.ToLower(matches[0])
-			answer = append(answer, strings.Replace(temp, " ce ", "/", 1))
-		} else {
-			answer = append(answer, "windows/N")
-		}
+	if strings.Contains(detail_all_in_one, "windows") {
+		service_app = append(service_app, GetWindows(m))
 	}
 
 	//识别nginx
 	//目前没有看到有信息能指出nginx的版本，有些时候可能能从body里找到
-	if strings.Contains(m["FingerPrint"], "nginx") {
-		answer = append(answer, "nginx/N")
-	} else if strings.Contains(m["Server"], "nginx") {
-		//如Server: nginx/1.18.0 (Ubuntu)提取为nginx/1.18.0，如Server: nginx/1.28.0提取为nginx/1.28.0
-		re := regexp.MustCompile(`nginx/(\d+\.\d+(\.\d+){0,2})`)
-		matches := re.FindAllString(m["Server"], -1)
-		if len(matches) > 0 {
-			answer = append(answer, strings.ToLower(matches[0]))
-		} else {
-			answer = append(answer, "nginx/N")
-		}
+	if strings.Contains(detail_all_in_one, "nginx") {
+		service_app = append(service_app, GetNginx(m))
 	}
+
 	//识别Jetty
 	//对Jetty(9.4.11.v20180605)记为Jetty/9.4.11.v20180605，对Jetty记为Jetty/N
-	if strings.Contains(m["Server"], "Jetty") {
-		re := regexp.MustCompile(`Jetty(\((.*?)\))?`)
-		matches := re.FindStringSubmatch(m["Server"])
-		if matches[2] == "" { // 如果括号内无任何文本，则替换为 "Jetty/N"
-			answer = append(answer, "jetty/N")
-		} else {
-			answer = append(answer, "jetty/"+matches[2])
-		}
+	if strings.Contains(detail_all_in_one, "jetty") {
+		service_app = append(service_app, GetJetty(m))
 	}
+
 	//识别debian
 	//若server中有Debian则记为debian/N，若使用正则识别出response中出现Debian-5则记为debian/5
-	re = regexp.MustCompile(`Debian-(\d+)`)
-	match = re.FindStringSubmatch(m["Response"])
-	if len(match) > 0 && match[1] != "" { // 如果匹配到 "Debian-数字"
-		answer = append(answer, "debian/"+match[1])
-	} else if strings.Contains(m["Server"], "Debian") {
-		answer = append(answer, "debian/N")
-	} else {
-		match = re.FindStringSubmatch(m["Response"])
-		if len(match) > 0 && match[1] != "" { // 如果匹配到 "Debian-数字"
-			answer = append(answer, "debian/"+match[1])
-		} else if strings.Contains(m["Response"], "Debian") || strings.Contains(m["Response"], "debian") {
-			answer = append(answer, "debian/N")
-		}
+	if strings.Contains(detail_all_in_one, "debian") {
+		service_app = append(service_app, GetDebian(m))
 	}
 	//识别Grafana v9.1.2
 	//若FingerPrint中有grafana则记为grafana/N，若使用正则识别出Body中出现grafana v9.1.2等字样则记为grafana/v9.1.2
-	if strings.Contains(m["FingerPrint"], "Grafana") {
-		re := regexp.MustCompile(`Grafana (\d+\.\d+(\.\d+){0,2})`)
-		matches := re.FindAllString(m["Body"], -1)
-		if len(matches) > 0 {
-			answer = append(answer, strings.ToLower(matches[0]))
-		} else {
-			answer = append(answer, "grafana/N")
-		}
+	if strings.Contains(detail_all_in_one, "grafana") {
+		service_app = append(service_app, GetGrafana(m))
 	}
+
 	//玛德写完才发现sql不在考察范围内
 	// //识别mysql
 	// //将Version中的5.5.68-MariaDB记为5.5.68
@@ -386,79 +353,132 @@ func GetService(m map[string]string) []string {
 
 	//识别node.js
 	//若FingerPrint中有Node.js则记为node.js/N，若使用正则识别出Body中出现node.js v9.1.2等字样则记为node.js/9.1.2
-	if strings.Contains(m["FingerPrint"], "Node.js") {
-		re := regexp.MustCompile(`Node.js (\d+\.\d+(\.\d+){0,2})`)
-		matches := re.FindAllString(m["Body"], -1)
-		if len(matches) > 0 {
-			answer = append(answer, strings.ToLower(matches[0]))
-		} else {
-			answer = append(answer, "node.js/N")
-		}
+	if strings.Contains(detail_all_in_one, "node.js") {
+		service_app = append(service_app, GetNodeJS(m))
 	}
 	//识别express
 	//若FingerPrint中有Express则记为express/N
-	if strings.Contains(m["FingerPrint"], "Express") {
-		answer = append(answer, "express/N")
+	if strings.Contains(detail_all_in_one, "express") {
+		service_app = append(service_app, "express/N")
 	}
+	// if strings.Contains(m["FingerPrint"], "Express") {
+	// 	service_app = append(service_app, "express/N")
+	// }
 	//识别asp.net
 	//若X-Powered-By中有ASP.NET则记为asp.net/N
-	if strings.Contains(m["X-Powered-By"], "ASP.NET") {
-		answer = append(answer, "asp.net/N")
+	if strings.Contains(detail_all_in_one, "asp.net") {
+		service_app = append(service_app, "asp.net/N")
 	}
+	// if strings.Contains(m["X-Powered-By"], "ASP.NET") {
+	// 	service_app = append(service_app, "asp.net/N")
+	// }
 	//识别php
 	//若Server中有PHP/5.4.16，记为php/5.4.16
-	re = regexp.MustCompile(`(?i)PHP/([\d\.]+)`)
-	match = re.FindStringSubmatch(m["Server"])
-	if len(match) > 0 && match[1] != "" { // 如果匹配到 "PHP/数字"
-		answer = append(answer, "php/"+match[1])
-	} else if strings.Contains(m["Server"], "PHP") {
-		answer = append(answer, "php/N")
+	if strings.Contains(detail_all_in_one, "php") {
+		service_app = append(service_app, GetPHP(m))
 	}
+
 	//识别Microsoft-HTTPAPI
 	//若Server中有Microsoft-HTTPAPI/2.0则记为microsoft-httpapi/2.0
-	re = regexp.MustCompile(`(?i)Microsoft-HTTPAPI/([\d\.]+)`)
-	match = re.FindStringSubmatch(m["Server"])
-	if len(match) > 0 && match[1] != "" { // 如果匹配到 "Microsoft-HTTPAPI/数字"
-		answer = append(answer, "microsoft-httpapi/"+match[1])
-	} else if strings.Contains(m["Server"], "Microsoft-HTTPAPI") {
-		answer = append(answer, "microsoft-httpapi/N")
+	if strings.Contains(detail_all_in_one, strings.ToLower("Microsoft-HTTPAPI")) {
+		service_app = append(service_app, GetHttpAPI(m))
 	}
+
 	//识别apache
 	//若Server中有Apache/2.4.29 (Ubuntu)则记为apache/2.4.29
-	re = regexp.MustCompile(`(?i)Apache/([\d\.]+)`)
-	match = re.FindStringSubmatch(m["Server"])
-	if len(match) > 0 && match[1] != "" { // 如果匹配到 "Apache/数字"
-		answer = append(answer, "apache/"+match[1])
-	} else if strings.Contains(m["Server"], "Apache") && !strings.Contains(m["Server"], "Apache-Coyote") {
-		answer = append(answer, "apache/N")
+	if strings.Contains(detail_all_in_one, strings.ToLower("apache")) {
+		service_app = append(service_app, GetApache(m))
 	}
+
 	//识别OpenResty
 	//若Server中有OpenResty
-	if strings.Contains(m["Server"], "OpenResty") {
-		answer = append(answer, "openresty/N")
+	if strings.Contains(detail_all_in_one, "openresty") {
+		service_app = append(service_app, "openresty/N")
 	}
+	// if strings.Contains(m["Server"], "OpenResty") {
+	// 	service_app = append(service_app, "openresty/N")
+	// }
 	//识别IIS
 	//若Server中有IIS/10.0(Microsoft-IIS/10.0)则记为iis/10.0
-	re = regexp.MustCompile(`(?i)IIS/([\d\.]+)`)
-	match = re.FindStringSubmatch(m["Server"])
-	if len(match) > 0 && match[1] != "" { // 如果匹配到 "iis/数字"
-		answer = append(answer, "iis/"+match[1])
-	} else if strings.Contains(m["Server"], "iis") {
-		answer = append(answer, "iis/N")
+	if strings.Contains(detail_all_in_one, strings.ToLower("Microsoft-IIS")) {
+		service_app = append(service_app, GetIIS(m))
 	}
+
 	//识别OpenSSL
 	//若Server中有OpenSSL/1.1.1，则记为openssl/1.1.1
-	re = regexp.MustCompile(`(?i)OpenSSL/([\d\.]+)`)
-	match = re.FindStringSubmatch(m["Server"])
-	if len(match) > 0 && match[1] != "" { // 如果匹配到 "openssl/数字"
-		answer = append(answer, "openssl/"+match[1])
-	} else if strings.Contains(m["Server"], "openssl") {
-		answer = append(answer, "openssl/N")
+	if strings.Contains(detail_all_in_one, strings.ToLower("openssl")) {
+		service_app = append(service_app, GetOpenSSL(m))
 	}
 	//识别elasticsearch
 	//若Body中出现Elasticsearch，则记为elasticsearch/N
-	if strings.Contains(m["Body"], "Elasticsearch") {
-		answer = append(answer, "elasticsearch/N")
+	if strings.Contains(detail_all_in_one, "elasticsearch") {
+		service_app = append(service_app, "elasticsearch/N")
 	}
-	return answer
+	//识别LiteSpeed
+	if strings.Contains(detail_all_in_one, "litespeed") {
+		service_app = append(service_app, "litespeed/N")
+	}
+	//识别rabbitmq
+	if strings.Contains(detail_all_in_one, "rabbitmq") {
+		service_app = append(service_app, "rabbitmq/N")
+	}
+	//识别micro_httpd
+	if strings.Contains(detail_all_in_one, "micro_httpd") {
+		service_app = append(service_app, "micro_httpd/N")
+	}
+	//识别grafana
+	if strings.Contains(detail_all_in_one, "grafana") {
+		service_app = append(service_app, "grafana/N")
+	}
+	//识别Weblogic
+	if strings.Contains(detail_all_in_one, "weblogic") {
+		service_app = append(service_app, "weblogic/N")
+	}
+	//识别java
+	if strings.Contains(detail_all_in_one, "java") && strings.Contains(detail_all_in_one, "javarmi") && strings.Contains(detail_all_in_one, "javadoc") && strings.Contains(detail_all_in_one, "javaex") && strings.Contains(detail_all_in_one, "javascript") {
+		service_app = append(service_app, "java/N")
+	}
+	// 识别ubuntu
+	if strings.Contains(detail_all_in_one, "ubuntu") {
+		service_app = append(service_app, GetUbuntu(m))
+	}
+	// 识别centos
+	if strings.Contains(detail_all_in_one, "centos") {
+		service_app = append(service_app, "centos/N")
+	}
+	info.ServiceApp = removeEmptyStrings(service_app)
+	// 识别蜜罐
+	honeypot := make([]string, 0)
+	honeypot_list := []string{"glastopf", "kippo", "hfish"}
+	//循环遍历，若匹配成功添加端口/蜜罐名
+	for _, honeypot_name := range honeypot_list {
+		if strings.Contains(detail_all_in_one, honeypot_name) {
+			honeypot = append(honeypot, m["Port"])
+			honeypot = append(honeypot, honeypot_name)
+		}
+	}
+	info.Honeypot = honeypot
+	//识别设备信息
+	deviceinfo := make([]string, 0)
+	if strings.Contains(detail_all_in_one, "pfsense") {
+		deviceinfo = append(deviceinfo, "firewall/pfsense")
+	} else if strings.Contains(detail_all_in_one, "hikvision-cameras") {
+		deviceinfo = append(deviceinfo, "webcam/hikvision")
+	} else if strings.Contains(detail_all_in_one, "dahua-cameras") {
+		deviceinfo = append(deviceinfo, "webcam/dahua")
+	} else if strings.Contains(detail_all_in_one, "cisco-switch") {
+		deviceinfo = append(deviceinfo, "switch/cisco")
+	} else if strings.Contains(detail_all_in_one, "synology-sAS") {
+		deviceinfo = append(deviceinfo, "nas/synology")
+	}
+	info.DeviceInfo = deviceinfo
+
+	// 识别IP地址
+	info.Ip = m["IP"]
+	// 识别端口
+	info.Port, _ = strconv.Atoi(m["Port"])
+	// 识别协议
+	info.Protocol = GetProtocol(m)
+
+	return info
 }

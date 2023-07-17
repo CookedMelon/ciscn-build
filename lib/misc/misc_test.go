@@ -218,3 +218,31 @@ func TestSSL(t *testing.T) {
 	}
 	fmt.Println(answer)
 }
+func TestUbuntu(t *testing.T) {
+	var m = map[string]string{}
+	var answer = make([]string, 0)
+	// m["Response"] = "Debian-10"
+	// m["Server"] = "(Debian)"
+	m["Response"] = "SSH-2.0-OpenSSH_6.6.1p1 2020Ubuntu-2ubuntu2"
+	re := regexp.MustCompile(`Ubuntu-(\d+)`)
+	match := re.FindStringSubmatch(m["Response"])
+	if len(match) > 0 && match[1] != "" { // 如果匹配到 "Debian-数字"
+		answer = append(answer, "ubuntu/"+match[1])
+	} else if strings.Contains(m["Server"], "Ubuntu") {
+		answer = append(answer, "ubuntu/N")
+	} else {
+		match = re.FindStringSubmatch(m["Response"])
+		if len(match) > 0 && match[1] != "" { // 如果匹配到 "Debian-数字"
+			answer = append(answer, "ubuntu/"+match[1])
+		} else if strings.Contains(m["Response"], "Ubuntu") || strings.Contains(m["Response"], "ubuntu") {
+			answer = append(answer, "ubuntu/N")
+		}
+	}
+	fmt.Println(answer)
+}
+func TestGetProtocol(t *testing.T) {
+	m := map[string]string{}
+	m["Response"] = "SSH-2.0-OpenSSH_8.4p1 Debian-5+deb11u1"
+	m["URL"] = "ssh://113.30.191.68:1022"
+	fmt.Println(GetProtocol(m))
+}

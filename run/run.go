@@ -253,6 +253,7 @@ func generatePortScanner(wg *sync.WaitGroup) *scanner.PortClient {
 		}
 		outputNmapFinger(URL, response)
 	}
+
 	client.HandlerError = func(addr net.IP, port int, err error) {
 		slog.Println(slog.DEBUG, "PortScanner Error: ", fmt.Sprintf("%s:%d", addr.String(), port), err)
 	}
@@ -305,6 +306,10 @@ func outputNmapFinger(URL *url.URL, resp *gonmap.Response) {
 	fmt.Println(finger.Service)
 	misc.PrintMap(m)
 	fmt.Println("------------------------------")
+	m["URL"] = URL.String() //nmap扫出的url没有URL
+	tmap := misc.GetService(m)
+	misc.Printinfo(tmap)
+	fmt.Println("+++++++++++++++++++++++++++++++++++++++++++++")
 	// outputHandler(URL, finger.Service, m)
 }
 
@@ -359,6 +364,10 @@ func outputAppFinger(URL *url.URL, banner *appfinger.Banner, finger *appfinger.F
 	misc.PrintMap(m)
 	// outputHandler(URL, banner.Title, m)
 	fmt.Println("------------------------------")
+	m["URL"] = URL.String() //appfinger扫出的url没有URL
+	tmap := misc.GetService(m)
+	misc.Printinfo(tmap)
+	fmt.Println("+++++++++++++++++++++++++++++++++++++++++++++")
 }
 
 //	func outputUnknownResponse(addr net.IP, port int, response string) {
@@ -396,6 +405,10 @@ func outputUnknownResponse(addr net.IP, port int, response string) {
 	// 	"Port":     strconv.Itoa(port),
 	// })
 	fmt.Println("------------------------------")
+	m := map[string]string{"IP": URL.Hostname(), "Port": strconv.Itoa(port), "Response": response, "URL": URL.String()}
+	tmap := misc.GetService(m)
+	misc.Printinfo(tmap)
+	fmt.Println("+++++++++++++++++++++++++++++++++++++++++++++")
 }
 
 //	func outputOpenResponse(addr net.IP, port int) {
@@ -427,6 +440,10 @@ func outputOpenResponse(addr net.IP, port int) {
 	// 	"Port": strconv.Itoa(port),
 	// })
 	fmt.Println("------------------------------")
+	m := map[string]string{"IP": URL.Hostname(), "Port": strconv.Itoa(port), "URL": URL.String()}
+	tmap := misc.GetService(m)
+	misc.Printinfo(tmap)
+	fmt.Println("+++++++++++++++++++++++++++++++++++++++++++++")
 }
 func responseFilter(strArgs ...string) bool {
 	var match = app.Setting.Match
@@ -523,6 +540,7 @@ func outputHandler(URL *url.URL, keyword string, m map[string]string) {
 	sourceMap["Keyword"] = keyword
 	misc.PrintMap(m)
 
+	// fmt.Println(tmap)
 	if jw := app.Setting.OutputJson; jw != nil {
 		sourceMap["URL"] = URL.String()
 		sourceMap["Keyword"] = keyword
