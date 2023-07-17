@@ -306,11 +306,14 @@ func outputNmapFinger(URL *url.URL, resp *gonmap.Response) {
 	fmt.Println(finger.Service)
 	misc.PrintMap(m)
 	fmt.Println("------------------------------")
+<<<<<<< HEAD
 	m["URL"] = URL.String() //nmap扫出的url没有URL
 	tmap := misc.GetService(m)
 	misc.Printinfo(tmap)
 	fmt.Println("+++++++++++++++++++++++++++++++++++++++++++++")
 	// outputHandler(URL, finger.Service, m)
+=======
+>>>>>>> 9eb10a0602825e1c55e224b5cd5e74719debd4d1
 }
 
 //	func outputAppFinger(URL *url.URL, banner *appfinger.Banner, finger *appfinger.FingerPrint) {
