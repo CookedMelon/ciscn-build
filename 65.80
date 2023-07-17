@@ -1,0 +1,709 @@
+╰─ go run ./jkscan.go -t 211.22.90.65:80
+
+    8  8   8  8""""8 8""""8 8""""8 8"""8
+    8  8   8  8      8    " 8    8 8   8
+    8e 8eee8e 8eeeee 8e     8eeee8 8e  8
+    88 88   8     88 88     88   8 88  8
+e   88 88   8 e   88 88   e 88   8 88  8
+8eee88 88   8 8eee88 88eee8 88   8 88  8
+
+[+]2023/07/17 18:45:10 成功加载HTTP指纹:[1210]条
+[+]2023/07/17 18:45:10 成功加载NMAP探针:[150]个,指纹[11916]条
+[+]2023/07/17 18:45:11 准备就绪
+[+]2023/07/17 18:45:11 所有扫描任务已下发完毕
+normal1
+dns://211.22.90.65:53
+dns
+map:
+OperatingSystem :
+DeviceType :
+IP : 211.22.90.65
+ProductName :
+Version :
+Info :
+Hostname :
+Response : DnsServer
+Port : 53
+ProbeName :
+MatchRegexString :
+Service : dns
+------------------------------
+ip: 211.22.90.65
+port: 53
+protocol:
+service_app: []
+deviceinfo: []
+honeypot: []
++++++++++++++++++++++++++++++++++++++++++++++
+normal2
+http://211.22.90.65:80
+ARGOTechnologyCo.,Ltd.-雅士博科技股份有限公司
+map:
+MACAddr :
+Service : http
+FoundIP :
+Response : HTTP/1.1 200 OK
+X-Powered-By: PHP/5.5.38;ASP.NET
+Pragma: no-cache
+Content-Type: text/html; charset=utf-8
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Server: Microsoft-IIS/7.5
+Date: Mon, 17 Jul 2023 10:45:14 GMT
+Content-Length: 17439
+Set-Cookie: PHPSESSID=pi45kgiatpauovp3euuld8b546; path=/
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+
+﻿﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
+<meta name="viewport" content="width=1280" />
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+<meta name="robots" content="index, follow">
+<meta name="revisit-after" content="1 days">
+<meta name="RATING" content="general">
+<meta name="keywords" content="ARGO">
+<meta name="description" content="ARGO Technology Co., Ltd. - 雅士博科技股份有限公司"><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
+<title>ARGO Technology Co., Ltd. - 雅士博科技股份有限公司</title>
+<meta name="keywords" content="ARGO" />
+<meta name="description" content="ARGO Technology Co., Ltd. - 雅士博科技股份有限公司" />
+<meta name="robots" content="index, follow" />
+<meta name="revisit-after" content="1 days" />
+<meta name="RATING" content="general" />
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<link href="css/default.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="js/jquery.js"></script>
+<!--[if lt IE 9]>
+                <script src="js/html5.js"></script>
+<![endif]-->
+<!--[if IE 6]>
+                <script src="js/DD_belatedPNG.js"></script>
+                <script>
+                  DD_belatedPNG.fix('*');
+                </script>
+<![endif]--><meta name="robots" content="index, follow">
+<meta name="revisit-after" content="1 days">
+<meta name="RATING" content="general">
+<link href="css/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="js/basic/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="js/basic/basic.js"></script>
+<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]--><!--html5-->
+<!--[if IE 6]>
+  <script src="js/basic/DD_belatedPNG.js"></script>
+  <script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<script type="text/javascript" src="js/basic/minwt.auto_full_height.mini.js"></script><!--pageheight-->
+<!--非手機網頁讀取特效-->
+<!--[if gte IE 8]><!/*ie8以上含非ie瀏覽器*/-->
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script><!--Scrollbar-->
+<script type="text/javascript" src="js/plugins/Scrollbar/jquery.mousewheel.min.js"></script><!--Scrollbar-->
+<script type="text/javascript" src="js/plugins/Scrollbar/jquery.mCustomScrollbar.js"></script><!--Scrollbar-->
+<link href="css/customScrollBox.css" rel="stylesheet" type="text/css"><!--Scrollbar-->
+<!--<![endif]-->
+
+<!--非手機網頁讀取特效 end--><!--非手機網頁讀取特效-->
+<script type='text/javascript' src='js/plugins/toppage.js'></script><!--back top-->
+<!--[if IE]>
+        <script src="js/jquery.placeholder.js"></script>
+        <script type="text/javascript">
+        $(function(){
+                $('input[placeholder]').placeholder();
+                $('textarea[placeholder]').placeholder();
+        });
+</script>
+<![endif]-->
+
+<!--<script type='text/javascript' src='js/plugins/slider/jquery.nivo.slider.js'></script><!--banner-->
+<!--<link href="js/plugins/slider/banner-slider.css" rel="stylesheet" type="text/css" /><!--banner-->
+<script type="text/javascript" src="js/banner2/slider.js"></script><!--banner-->
+<script type="text/javascript" src="js/common.js"></script><!--spro view-->
+<script type="text/javascript" src="js/jq.imgTxtCut.js"></script><!--hover bg-->
+<link rel="stylesheet" href="js/banner2/themes/default/default.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="js/banner2/nivo-slider.css" type="text/css" media="screen" />
+<script type="text/javascript">
+$(function(){
+        $("#img-txt-box2").imgTxtCut({
+                effects:"fade",
+                speed : 300
+        });
+});
+</script>
+</head>
+<body>
+<div id="warpbg"><div id="bg"><div id="bg2"><div id="bg3" style="background-image: none;">
+        ﻿<!--header-->
+<section id="header" class="container">
+  <!--<div id="toppage"></div>-->
+    <a href="index.php" title="ARGO" alt="ARGO" class="logo"><img src="images/index_logo.jpg" width="213" height="62" /></a>
+         <nav id="minNavTop">
+        <ul class="minNavTop">
+                                                                                                                                                                                        </ul>
+    </nav>
+    <!--語系 STAR-->
+    <nav id="navLen" >
+        <ul class="menuHover">
+            <li><a href="http://www.argotech.com.tw/tw/" ><span>繁體中文</span></a></li>
+            <li><a href="http://www.argotech.com.tw/" class="en select"><span>English</span></a></li>
+        </ul>
+    </nav>
+    <!--語系 END-->
+    <!--menu-->
+
+    <nav id="minNav">
+        <ul class="minNav">
+            <li class="home"><a href="about.php" class=""<span>ABOUT</span></a></li>
+            <li><a href="download.php" class=""<span>DOWNLOAD</span></a></li>
+            <li><a href="news.php" class=""<span>NEWS</span></a></li>
+            <li><a href="contact.php" class=""<span>CONTACT</span></a></li>
+            <li><a href="products.php" class=""<span>PRODUCTS</span></a></li>
+                                                <li><a href="contactQa.php" class=""<span>SUPPORT</span></a></li>
+        </ul>
+    </nav>
+    <!--menu end-->
+    <!--fb-->
+    <nav id="fbNav">
+        <div class="fbheaInco"><a href="https://www.facebook.com/Argo1676" target="_blank" fbheaInco>Facebook</a></div>
+        <form action="products_search.php" method="GET" >
+                <input type="hidden" name="cls" id="cls" value=""/>
+        <input name="k" id="k" value="" placeholder="Search Keyword"/>
+        <button type="submit" title="Search"><span><img src="images/index_fb_search.png" /></span></button>
+        </form>
+    </nav>
+
+    <!--fb end-->
+
+</section>
+<!--header end-->       <section id="cont">
+                <section id="index">
+                <!--banner-->
+                                <div class="slider-wrapper theme-default">
+                        <div id="slider" class="nivoSlider">
+                                <a title="Dual-port USB charger" href="../" target="_self" ><img src="./_img/index_img/2_en_zoom.jpg" alt="Dual-port USB charger" /></a><a title="LED Lighting" href="http://www.argotech.com.tw/" target="_self" ><img src="./_img/index_img/6_en_zoom.jpg" alt="LED Lighting" /></a><a title="Power Transformer" ><img src="./_img/index_img/5_en_zoom.jpg" alt="Power Transformer" /></a>       </div>
+                </div>
+                                <!--banner end-->
+
+
+        <!--dealerInfo-->
+        <!--dealerInfo-->
+        <section id="dealerInfo">
+                <div style="width: 1150px; margin-right: auto; margin-left: auto;">
+            <ul class="dealerList ">
+                <li><a href="http://www.argotech.com.tw/products.php" title="ARGO" alt="ARGO"><img src="images/index_logo0.png"></a></li>
+                <li><a href="http://www5.epsondevice.com/ja/quartz/" title="EPSON" target="_blank" alt="EPSON"><img src="images/index_logo4.jpg"></a></li>
+                <li><a href="http://www.fujicera.co.jp/product/e/index.html" title="Fujicera" target="_blank" alt="Fujicera"><img src="images/index_logo1.jpg"></a></li>
+                <li><a href="http://www.alps.com/c/index.html" title="ALPS" target="_blank" alt="ALPS"><img src="images/index_logo2.jpg"></a></li>
+                <!--<li><a href="http://www.citizen.co.jp/global/index.html" title="CITIZEN" target="_blank" alt="CITIZEN"><img src="images/index_logo3.jpg"></a></li>-->
+                <li><a href="http://www.amotech.co.kr/Chi/" title="AMOTECH" target="_blank" alt="AMOTECH"><img src="images/index_logo5.jpg"></a></li>
+                <li><a href="http://www.matsuo-ele.com/index.html" title="MATSUO" target="_blank" alt="MATSUO"><img src="images/index_logo6.jpg"></a></li>
+            </ul>
+            </div>
+        </section>
+        <!--dealerInfo end-->
+        <!--dealerInfo end-->
+
+        <!--proInfo-->
+        <section id="proInfo" class="container">
+        <h3>Latest Product</h3>
+            <div id="img-txt-box2">
+                          <div id="conexpert3" class="conexpert auto ">
+                <div class="left" id="Left" alt="Prev" title="Prev">Prev</div>
+                <a class="prev01">&nbsp;</a>                    <div id="AllP">
+                      <ul>
+                                                  <li>
+                                <div class="imgBox"><a href="products_detail.php?id=43"><img src="./_img/pro/43_3_list.jpg"></a></div>
+                                <div class="txtBox"><a href="productsDia.php"><span>#</span></a></div>
+                                <div class="titBox"><a href="products.php?id=43" title="Model：SMD VCXO/TCVCXO">SMD VCXO/TCVCXO</a></div>
+                            </li>
+                                                    <li>
+                                <div class="imgBox"><a href="products_detail.php?id=47"><img src="./_img/pro/47_3_list.jpg"></a></div>
+                                <div class="txtBox"><a href="productsDia.php"><span>#</span></a></div>
+                                <div class="titBox"><a href="products.php?id=47" title="Model：SMD Type Crystal MCF AGMCF-SF7050">SMD Type Crystal MCF AGMCF-SF7050</a></div>
+                            </li>
+                                                    <li>
+                                <div class="imgBox"><a href="products_detail.php?id=20"><img src="./_img/pro/20_1_list.jpg"></a></div>
+                                <div class="txtBox"><a href="productsDia.php"><span>#</span></a></div>
+                                <div class="titBox"><a href="products.php?id=20" title="Model：KHZ Dip Crystal">KHZ Dip Crystal</a></div>
+                            </li>
+                                                    <li>
+                                <div class="imgBox"><a href="products_detail.php?id=21"><img src="./_img/pro/21_3_list.jpg"></a></div>
+                                <div class="txtBox"><a href="productsDia.php"><span>#</span></a></div>
+                                <div class="titBox"><a href="products.php?id=21" title="Model：MHz Range Crystal">MHz Range Crystal</a></div>
+                            </li>
+                                                    <li>
+                                <div class="imgBox"><a href="products_detail.php?id=22"><img src="./_img/pro/22_3_list.jpg"></a></div>
+                                <div class="txtBox"><a href="productsDia.php"><span>#</span></a></div>
+                                <div class="titBox"><a href="products.php?id=22" title="Model：Piezoelectric Ceramic Elements">Piezoelectric Ceramic Elements</a></div>
+                            </li>
+                                                    <li>
+                                <div class="imgBox"><a href="products_detail.php?id=125"><img src="./_img/pro/125_3_list.jpg"></a></div>
+                                <div class="txtBox"><a href="productsDia.php"><span>#</span></a></div>
+                                <div class="titBox"><a href="products.php?id=125" title="Model：MHz Cylinder DIP Crystal">MHz Cylinder DIP Crystal</a></div>
+                            </li>
+                                                    <li>
+                                <div class="imgBox"><a href="products_detail.php?id=26"><img src="./_img/pro/26_3_list.jpg"></a></div>
+                                <div class="txtBox"><a href="productsDia.php"><span>#</span></a></div>
+                                <div class="titBox"><a href="products.php?id=26" title="Model：Dip Type Oscillator">Dip Type Oscillator</a></div>
+                            </li>
+                                                    <li>
+                                <div class="imgBox"><a href="products_detail.php?id=30"><img src="./_img/pro/30_3_list.jpg"></a></div>
+                                <div class="txtBox"><a href="productsDia.php"><span>#</span></a></div>
+                                <div class="titBox"><a href="products.php?id=30" title="Model：SMD Crystal">SMD Crystal</a></div>
+                            </li>
+                                                    <li>
+                                <div class="imgBox"><a href="products_detail.php?id=40"><img src="./_img/pro/40_1_list.jpg"></a></div>
+                                <div class="txtBox"><a href="productsDia.php"><span>#</span></a></div>
+                                <div class="titBox"><a href="products.php?id=40" title="Model：SMD Oscillator">SMD Oscillator</a></div>
+                            </li>
+                                                </ul>
+                    </div>
+                              <div class="right" id="Right" alt="Next" title="Next">Next</div>
+                <SCRIPT type=text/javascript>
+                        var scrollPic_01 = new ScrollPic();
+                        scrollPic_01.scrollContId   = "AllP"; //内容容器ID
+                        scrollPic_01.arrLeftId      = "Left";//左箭头ID
+                        scrollPic_01.arrRightId     = "Right"; //右箭头ID
+                        scrollPic_01.frameWidth     = 940;//显示框宽度
+                        scrollPic_01.pageWidth      = 235; //翻页宽度
+                        scrollPic_01.speed          = 20; //移动速度(单位毫秒，越小越快)
+                        scrollPic_01.space          = 20; //每次移动像素(单位px，越大越快)
+                        scrollPic_01.autoPlay       = true; //自动播放
+                        scrollPic_01.autoPlayTime   = 2; //自动播放间隔时间(秒)
+                        scrollPic_01.initialize(); //初始化
+                </SCRIPT>
+                 <div class="clear"></div>
+            </div>
+            </div>
+        </section>
+        <!--proInfo end-->
+
+        <!--newsInfo-->
+                <div style="background-image:url(images/index_newsInfo_bg.jpg); background-position: top center; height: 106px;">
+        <section id="newsInfo"  class="container" >
+        <h3>What’s  News</h3>
+          <ul class="newsListIn clearfix">
+                          <li class="auto">
+                <div class="date fl">2021-01-06</div>
+                <a href="news_detail.php?id=48" title="Projected Capacitive Touch Panel" class="info fl">Projected Capacitive Touch Panel</a>
+              </li>
+                          <li class="auto">
+                <div class="date fl">2020-12-11</div>
+                <a href="news_detail.php?id=47" title="EMC Protection" class="info fl">EMC Protection</a>
+              </li>
+                          <li class="auto">
+                <div class="date fl">2020-09-22</div>
+                <a href="news_detail.php?id=46" title="Crystal Loop Analysis" class="info fl">Crystal Loop Analysis</a>
+              </li>
+
+          </ul>
+          <div class="more"><a href="news.php" alt="more" title="more" ><img src="images/index_newsInfo_more.png" alt="more" ></a></div>
+        </section>
+                </div>
+        <!--newsInfo end-->
+    </section>
+</section>
+
+﻿<footer id="footer">
+        <section class="container">
+    <!--menu-->
+    <nav id="minNav">
+        <ul class="minNav">
+            <li class="home"><a href="about.php" ><span>ABOUT</span></a></li>
+            <li><a href="download.php" ><span>DOWNLOAD</span></a></li>
+            <li><a href="news.php" ><span>NEWS</span></a></li>
+            <li><a href="contact.php" ><span>CONTACT</span></a></li>
+            <li><a href="products.php" ><span>PRODUCTS</span></a></li>
+            <li><a href="contactQa.php" ><span>SUPPORT</span></a></li>
+        </ul>
+    </nav>
+    <!--menu end-->
+    <!--語系 STAR-->
+    <nav id="navLen" >
+        <ul class="menuHover">
+            <li><a  href="http://www.argotech.com.tw/tw/" ><span>繁體中文</span></a></li>
+            <li><a href="http://www.argotech.com.tw/" class="en select"><span>English</span></a></li>
+        </ul>
+    </nav>
+    <!--語系 END-->
+    <nav class="fbfot">Find us on : <a href="https://www.facebook.com/Argo1676" target="_blank" class="fbfotInco">Facebook</a></nav>
+    <!--navCon-->
+    <nav class="navCon" >
+    <p><span class="tel">886-2-26980598</span><br/><span class="fax">886-2-26980597</span><br/>
+                <span class="mail"><a href="mailto:argosales@argotech.com.tw" target="_blank">argosales@argotech.com.tw</a></span></br>
+                                <span class="add">6F-4, No.81, Sec. 1, Xintai 5th Rd.,<br> 　　 Xizhi Dist., Xinbei City 221, Taiwan (R.O.C.)</span></p>
+    </nav>
+    <!--navCon END-->
+        <p class="cropright">© 2012 Argo Technology Co., Ltd.<span class="designcompny"> <a href="http://e-creative.tw/" title="英創達網路有限公司，台中網頁設計" target="_blank">Design by <abbr title="創達網路 有限公司">E-creative</abbr> </a></span></p>
+    </section>
+</footer></div></div></div></div>
+</body>
+<!--
+<script type="text/javascript">
+        var slideshow=new TINY.slider.slide('slideshow',{
+                id:'slider',
+                auto:3,
+                resume:false,
+                vertical:false,
+                navid:'pagination',
+                activeclass:'current',
+                position:0,
+                rewind:false,
+                elastic:true,
+                left:'slideleft',
+                right:'slideright'
+        });
+</script>
+-->
+<script type="text/javascript" src="js/banner2/jquery.nivo.slider.pack.js"></script>
+<script type="text/javascript">
+        $(window).load(function() {
+                $('#slider').nivoSlider({
+                        effect: 'random',
+                        pauseTime:4000
+                });
+        });
+</script>
+</html>
+Cert :
+Body : ﻿﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
+<meta name="viewport" content="width=1280" />
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+<meta name="robots" content="index, follow">
+<meta name="revisit-after" content="1 days">
+<meta name="RATING" content="general">
+<meta name="keywords" content="ARGO">
+<meta name="description" content="ARGO Technology Co., Ltd. - 雅士博科技股份有限公司"><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
+<title>ARGO Technology Co., Ltd. - 雅士博科技股份有限公司</title>
+<meta name="keywords" content="ARGO" />
+<meta name="description" content="ARGO Technology Co., Ltd. - 雅士博科技股份有限公司" />
+<meta name="robots" content="index, follow" />
+<meta name="revisit-after" content="1 days" />
+<meta name="RATING" content="general" />
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<link href="css/default.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="js/jquery.js"></script>
+<!--[if lt IE 9]>
+                <script src="js/html5.js"></script>
+<![endif]-->
+<!--[if IE 6]>
+                <script src="js/DD_belatedPNG.js"></script>
+                <script>
+                  DD_belatedPNG.fix('*');
+                </script>
+<![endif]--><meta name="robots" content="index, follow">
+<meta name="revisit-after" content="1 days">
+<meta name="RATING" content="general">
+<link href="css/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="js/basic/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="js/basic/basic.js"></script>
+<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]--><!--html5-->
+<!--[if IE 6]>
+  <script src="js/basic/DD_belatedPNG.js"></script>
+  <script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<script type="text/javascript" src="js/basic/minwt.auto_full_height.mini.js"></script><!--pageheight-->
+<!--非手機網頁讀取特效-->
+<!--[if gte IE 8]><!/*ie8以上含非ie瀏覽器*/-->
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script><!--Scrollbar-->
+<script type="text/javascript" src="js/plugins/Scrollbar/jquery.mousewheel.min.js"></script><!--Scrollbar-->
+<script type="text/javascript" src="js/plugins/Scrollbar/jquery.mCustomScrollbar.js"></script><!--Scrollbar-->
+<link href="css/customScrollBox.css" rel="stylesheet" type="text/css"><!--Scrollbar-->
+<!--<![endif]-->
+
+<!--非手機網頁讀取特效 end--><!--非手機網頁讀取特效-->
+<script type='text/javascript' src='js/plugins/toppage.js'></script><!--back top-->
+<!--[if IE]>
+        <script src="js/jquery.placeholder.js"></script>
+        <script type="text/javascript">
+        $(function(){
+                $('input[placeholder]').placeholder();
+                $('textarea[placeholder]').placeholder();
+        });
+</script>
+<![endif]-->
+
+<!--<script type='text/javascript' src='js/plugins/slider/jquery.nivo.slider.js'></script><!--banner-->
+<!--<link href="js/plugins/slider/banner-slider.css" rel="stylesheet" type="text/css" /><!--banner-->
+<script type="text/javascript" src="js/banner2/slider.js"></script><!--banner-->
+<script type="text/javascript" src="js/common.js"></script><!--spro view-->
+<script type="text/javascript" src="js/jq.imgTxtCut.js"></script><!--hover bg-->
+<link rel="stylesheet" href="js/banner2/themes/default/default.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="js/banner2/nivo-slider.css" type="text/css" media="screen" />
+<script type="text/javascript">
+$(function(){
+        $("#img-txt-box2").imgTxtCut({
+                effects:"fade",
+                speed : 300
+        });
+});
+</script>
+</head>
+<body>
+<div id="warpbg"><div id="bg"><div id="bg2"><div id="bg3" style="background-image: none;">
+        ﻿<!--header-->
+<section id="header" class="container">
+  <!--<div id="toppage"></div>-->
+    <a href="index.php" title="ARGO" alt="ARGO" class="logo"><img src="images/index_logo.jpg" width="213" height="62" /></a>
+         <nav id="minNavTop">
+        <ul class="minNavTop">
+                                                                                                                                                                                        </ul>
+    </nav>
+    <!--語系 STAR-->
+    <nav id="navLen" >
+        <ul class="menuHover">
+            <li><a href="http://www.argotech.com.tw/tw/" ><span>繁體中文</span></a></li>
+            <li><a href="http://www.argotech.com.tw/" class="en select"><span>English</span></a></li>
+        </ul>
+    </nav>
+    <!--語系 END-->
+    <!--menu-->
+
+    <nav id="minNav">
+        <ul class="minNav">
+            <li class="home"><a href="about.php" class=""<span>ABOUT</span></a></li>
+            <li><a href="download.php" class=""<span>DOWNLOAD</span></a></li>
+            <li><a href="news.php" class=""<span>NEWS</span></a></li>
+            <li><a href="contact.php" class=""<span>CONTACT</span></a></li>
+            <li><a href="products.php" class=""<span>PRODUCTS</span></a></li>
+                                                <li><a href="contactQa.php" class=""<span>SUPPORT</span></a></li>
+        </ul>
+    </nav>
+    <!--menu end-->
+    <!--fb-->
+    <nav id="fbNav">
+        <div class="fbheaInco"><a href="https://www.facebook.com/Argo1676" target="_blank" fbheaInco>Facebook</a></div>
+        <form action="products_search.php" method="GET" >
+                <input type="hidden" name="cls" id="cls" value=""/>
+        <input name="k" id="k" value="" placeholder="Search Keyword"/>
+        <button type="submit" title="Search"><span><img src="images/index_fb_search.png" /></span></button>
+        </form>
+    </nav>
+
+    <!--fb end-->
+
+</section>
+<!--header end-->       <section id="cont">
+                <section id="index">
+                <!--banner-->
+                                <div class="slider-wrapper theme-default">
+                        <div id="slider" class="nivoSlider">
+                                <a title="Dual-port USB charger" href="../" target="_self" ><img src="./_img/index_img/2_en_zoom.jpg" alt="Dual-port USB charger" /></a><a title="LED Lighting" href="http://www.argotech.com.tw/" target="_self" ><img src="./_img/index_img/6_en_zoom.jpg" alt="LED Lighting" /></a><a title="Power Transformer" ><img src="./_img/index_img/5_en_zoom.jpg" alt="Power Transformer" /></a>       </div>
+                </div>
+                                <!--banner end-->
+
+
+        <!--dealerInfo-->
+        <!--dealerInfo-->
+        <section id="dealerInfo">
+                <div style="width: 1150px; margin-right: auto; margin-left: auto;">
+            <ul class="dealerList ">
+                <li><a href="http://www.argotech.com.tw/products.php" title="ARGO" alt="ARGO"><img src="images/index_logo0.png"></a></li>
+                <li><a href="http://www5.epsondevice.com/ja/quartz/" title="EPSON" target="_blank" alt="EPSON"><img src="images/index_logo4.jpg"></a></li>
+                <li><a href="http://www.fujicera.co.jp/product/e/index.html" title="Fujicera" target="_blank" alt="Fujicera"><img src="images/index_logo1.jpg"></a></li>
+                <li><a href="http://www.alps.com/c/index.html" title="ALPS" target="_blank" alt="ALPS"><img src="images/index_logo2.jpg"></a></li>
+                <!--<li><a href="http://www.citizen.co.jp/global/index.html" title="CITIZEN" target="_blank" alt="CITIZEN"><img src="images/index_logo3.jpg"></a></li>-->
+                <li><a href="http://www.amotech.co.kr/Chi/" title="AMOTECH" target="_blank" alt="AMOTECH"><img src="images/index_logo5.jpg"></a></li>
+                <li><a href="http://www.matsuo-ele.com/index.html" title="MATSUO" target="_blank" alt="MATSUO"><img src="images/index_logo6.jpg"></a></li>
+            </ul>
+            </div>
+        </section>
+        <!--dealerInfo end-->
+        <!--dealerInfo end-->
+
+        <!--proInfo-->
+        <section id="proInfo" class="container">
+        <h3>Latest Product</h3>
+            <div id="img-txt-box2">
+                          <div id="conexpert3" class="conexpert auto ">
+                <div class="left" id="Left" alt="Prev" title="Prev">Prev</div>
+                <a class="prev01">&nbsp;</a>                    <div id="AllP">
+                      <ul>
+                                                  <li>
+                                <div class="imgBox"><a href="products_detail.php?id=43"><img src="./_img/pro/43_3_list.jpg"></a></div>
+                                <div class="txtBox"><a href="productsDia.php"><span>#</span></a></div>
+                                <div class="titBox"><a href="products.php?id=43" title="Model：SMD VCXO/TCVCXO">SMD VCXO/TCVCXO</a></div>
+                            </li>
+                                                    <li>
+                                <div class="imgBox"><a href="products_detail.php?id=47"><img src="./_img/pro/47_3_list.jpg"></a></div>
+                                <div class="txtBox"><a href="productsDia.php"><span>#</span></a></div>
+                                <div class="titBox"><a href="products.php?id=47" title="Model：SMD Type Crystal MCF AGMCF-SF7050">SMD Type Crystal MCF AGMCF-SF7050</a></div>
+                            </li>
+                                                    <li>
+                                <div class="imgBox"><a href="products_detail.php?id=20"><img src="./_img/pro/20_1_list.jpg"></a></div>
+                                <div class="txtBox"><a href="productsDia.php"><span>#</span></a></div>
+                                <div class="titBox"><a href="products.php?id=20" title="Model：KHZ Dip Crystal">KHZ Dip Crystal</a></div>
+                            </li>
+                                                    <li>
+                                <div class="imgBox"><a href="products_detail.php?id=21"><img src="./_img/pro/21_3_list.jpg"></a></div>
+                                <div class="txtBox"><a href="productsDia.php"><span>#</span></a></div>
+                                <div class="titBox"><a href="products.php?id=21" title="Model：MHz Range Crystal">MHz Range Crystal</a></div>
+                            </li>
+                                                    <li>
+                                <div class="imgBox"><a href="products_detail.php?id=22"><img src="./_img/pro/22_3_list.jpg"></a></div>
+                                <div class="txtBox"><a href="productsDia.php"><span>#</span></a></div>
+                                <div class="titBox"><a href="products.php?id=22" title="Model：Piezoelectric Ceramic Elements">Piezoelectric Ceramic Elements</a></div>
+                            </li>
+                                                    <li>
+                                <div class="imgBox"><a href="products_detail.php?id=125"><img src="./_img/pro/125_3_list.jpg"></a></div>
+                                <div class="txtBox"><a href="productsDia.php"><span>#</span></a></div>
+                                <div class="titBox"><a href="products.php?id=125" title="Model：MHz Cylinder DIP Crystal">MHz Cylinder DIP Crystal</a></div>
+                            </li>
+                                                    <li>
+                                <div class="imgBox"><a href="products_detail.php?id=26"><img src="./_img/pro/26_3_list.jpg"></a></div>
+                                <div class="txtBox"><a href="productsDia.php"><span>#</span></a></div>
+                                <div class="titBox"><a href="products.php?id=26" title="Model：Dip Type Oscillator">Dip Type Oscillator</a></div>
+                            </li>
+                                                    <li>
+                                <div class="imgBox"><a href="products_detail.php?id=30"><img src="./_img/pro/30_3_list.jpg"></a></div>
+                                <div class="txtBox"><a href="productsDia.php"><span>#</span></a></div>
+                                <div class="titBox"><a href="products.php?id=30" title="Model：SMD Crystal">SMD Crystal</a></div>
+                            </li>
+                                                    <li>
+                                <div class="imgBox"><a href="products_detail.php?id=40"><img src="./_img/pro/40_1_list.jpg"></a></div>
+                                <div class="txtBox"><a href="productsDia.php"><span>#</span></a></div>
+                                <div class="titBox"><a href="products.php?id=40" title="Model：SMD Oscillator">SMD Oscillator</a></div>
+                            </li>
+                                                </ul>
+                    </div>
+                              <div class="right" id="Right" alt="Next" title="Next">Next</div>
+                <SCRIPT type=text/javascript>
+                        var scrollPic_01 = new ScrollPic();
+                        scrollPic_01.scrollContId   = "AllP"; //内容容器ID
+                        scrollPic_01.arrLeftId      = "Left";//左箭头ID
+                        scrollPic_01.arrRightId     = "Right"; //右箭头ID
+                        scrollPic_01.frameWidth     = 940;//显示框宽度
+                        scrollPic_01.pageWidth      = 235; //翻页宽度
+                        scrollPic_01.speed          = 20; //移动速度(单位毫秒，越小越快)
+                        scrollPic_01.space          = 20; //每次移动像素(单位px，越大越快)
+                        scrollPic_01.autoPlay       = true; //自动播放
+                        scrollPic_01.autoPlayTime   = 2; //自动播放间隔时间(秒)
+                        scrollPic_01.initialize(); //初始化
+                </SCRIPT>
+                 <div class="clear"></div>
+            </div>
+            </div>
+        </section>
+        <!--proInfo end-->
+
+        <!--newsInfo-->
+                <div style="background-image:url(images/index_newsInfo_bg.jpg); background-position: top center; height: 106px;">
+        <section id="newsInfo"  class="container" >
+        <h3>What’s  News</h3>
+          <ul class="newsListIn clearfix">
+                          <li class="auto">
+                <div class="date fl">2021-01-06</div>
+                <a href="news_detail.php?id=48" title="Projected Capacitive Touch Panel" class="info fl">Projected Capacitive Touch Panel</a>
+              </li>
+                          <li class="auto">
+                <div class="date fl">2020-12-11</div>
+                <a href="news_detail.php?id=47" title="EMC Protection" class="info fl">EMC Protection</a>
+              </li>
+                          <li class="auto">
+                <div class="date fl">2020-09-22</div>
+                <a href="news_detail.php?id=46" title="Crystal Loop Analysis" class="info fl">Crystal Loop Analysis</a>
+              </li>
+
+          </ul>
+          <div class="more"><a href="news.php" alt="more" title="more" ><img src="images/index_newsInfo_more.png" alt="more" ></a></div>
+        </section>
+                </div>
+        <!--newsInfo end-->
+    </section>
+</section>
+
+﻿<footer id="footer">
+        <section class="container">
+    <!--menu-->
+    <nav id="minNav">
+        <ul class="minNav">
+            <li class="home"><a href="about.php" ><span>ABOUT</span></a></li>
+            <li><a href="download.php" ><span>DOWNLOAD</span></a></li>
+            <li><a href="news.php" ><span>NEWS</span></a></li>
+            <li><a href="contact.php" ><span>CONTACT</span></a></li>
+            <li><a href="products.php" ><span>PRODUCTS</span></a></li>
+            <li><a href="contactQa.php" ><span>SUPPORT</span></a></li>
+        </ul>
+    </nav>
+    <!--menu end-->
+    <!--語系 STAR-->
+    <nav id="navLen" >
+        <ul class="menuHover">
+            <li><a  href="http://www.argotech.com.tw/tw/" ><span>繁體中文</span></a></li>
+            <li><a href="http://www.argotech.com.tw/" class="en select"><span>English</span></a></li>
+        </ul>
+    </nav>
+    <!--語系 END-->
+    <nav class="fbfot">Find us on : <a href="https://www.facebook.com/Argo1676" target="_blank" class="fbfotInco">Facebook</a></nav>
+    <!--navCon-->
+    <nav class="navCon" >
+    <p><span class="tel">886-2-26980598</span><br/><span class="fax">886-2-26980597</span><br/>
+                <span class="mail"><a href="mailto:argosales@argotech.com.tw" target="_blank">argosales@argotech.com.tw</a></span></br>
+                                <span class="add">6F-4, No.81, Sec. 1, Xintai 5th Rd.,<br> 　　 Xizhi Dist., Xinbei City 221, Taiwan (R.O.C.)</span></p>
+    </nav>
+    <!--navCon END-->
+        <p class="cropright">© 2012 Argo Technology Co., Ltd.<span class="designcompny"> <a href="http://e-creative.tw/" title="英創達網路有限公司，台中網頁設計" target="_blank">Design by <abbr title="創達網路 有限公司">E-creative</abbr> </a></span></p>
+    </section>
+</footer></div></div></div></div>
+</body>
+<!--
+<script type="text/javascript">
+        var slideshow=new TINY.slider.slide('slideshow',{
+                id:'slider',
+                auto:3,
+                resume:false,
+                vertical:false,
+                navid:'pagination',
+                activeclass:'current',
+                position:0,
+                rewind:false,
+                elastic:true,
+                left:'slideleft',
+                right:'slideright'
+        });
+</script>
+-->
+<script type="text/javascript" src="js/banner2/jquery.nivo.slider.pack.js"></script>
+<script type="text/javascript">
+        $(window).load(function() {
+                $('#slider').nivoSlider({
+                        effect: 'random',
+                        pauseTime:4000
+                });
+        });
+</script>
+</html>
+Port : 80
+Hostname :
+ICP :
+IP : 211.22.90.65
+FingerPrint : Microsoft IIS httpd/7.5; Microsoft IIS httpd; Windows;  v
+Domain :
+Header : HTTP/1.1 200 OK
+X-Powered-By: PHP/5.5.38;ASP.NET
+Pragma: no-cache
+Content-Type: text/html; charset=utf-8
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Server: Microsoft-IIS/7.5
+Date: Mon, 17 Jul 2023 10:45:14 GMT
+Content-Length: 17439
+Set-Cookie: PHPSESSID=pi45kgiatpauovp3euuld8b546; path=/
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+
+------------------------------
+find windows: Microsoft IIS httpd/7.5; Microsoft IIS httpd; Windows;  v
+ip: 211.22.90.65
+port: 80
+protocol: http
+service_app: [windows/N asp.net/N]
+deviceinfo: []
+honeypot: []
++++++++++++++++++++++++++++++++++++++++++++++
+exit status 0xc000013a

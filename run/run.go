@@ -304,7 +304,7 @@ func outputNmapFinger(URL *url.URL, resp *gonmap.Response) {
 	fmt.Println("normal1")
 	fmt.Println(URL)
 	fmt.Println(finger.Service)
-	misc.PrintMap(m)
+	// misc.PrintMap(m)
 	fmt.Println("------------------------------")
 	m["URL"] = URL.String() //nmap扫出的url没有URL
 	tmap := misc.GetService(m)
@@ -361,10 +361,12 @@ func outputAppFinger(URL *url.URL, banner *appfinger.Banner, finger *appfinger.F
 	fmt.Println("normal2")
 	fmt.Println(URL)
 	fmt.Println(banner.Title)
-	misc.PrintMap(m)
+	// fmt.Println("out GetService1 m[‘X-Powered-By’]", m["X-Powered-By"])
+	// misc.PrintMap(m)
 	// outputHandler(URL, banner.Title, m)
 	fmt.Println("------------------------------")
 	m["URL"] = URL.String() //appfinger扫出的url没有URL
+	// fmt.Println("out GetService2 m[‘X-Powered-By’]", m["X-Powered-By"])
 	tmap := misc.GetService(m)
 	misc.Printinfo(tmap)
 	fmt.Println("+++++++++++++++++++++++++++++++++++++++++++++")
@@ -406,6 +408,7 @@ func outputUnknownResponse(addr net.IP, port int, response string) {
 	// })
 	fmt.Println("------------------------------")
 	m := map[string]string{"IP": URL.Hostname(), "Port": strconv.Itoa(port), "Response": response, "URL": URL.String()}
+	// m := map[string]interface{}{"IP": URL.Hostname(), "Port": strconv.Itoa(port), "Response": response, "URL": URL.String()}
 	tmap := misc.GetService(m)
 	misc.Printinfo(tmap)
 	fmt.Println("+++++++++++++++++++++++++++++++++++++++++++++")
@@ -441,6 +444,7 @@ func outputOpenResponse(addr net.IP, port int) {
 	// })
 	fmt.Println("------------------------------")
 	m := map[string]string{"IP": URL.Hostname(), "Port": strconv.Itoa(port), "URL": URL.String()}
+	// m := map[string]interface{}{"IP": URL.Hostname(), "Port": strconv.Itoa(port), "URL": URL.String()}
 	tmap := misc.GetService(m)
 	misc.Printinfo(tmap)
 	fmt.Println("+++++++++++++++++++++++++++++++++++++++++++++")

@@ -273,16 +273,21 @@ func TidyMap(m map[string]string) map[string]string {
 	return nm
 }
 func PrintMap(m map[string]string) {
-	fmt.Println("map:")
-	for key, value := range m {
-		fmt.Println(key, ":", value)
+	// fmt.Println("map:")
+	// for key, value := range m {
+	// 	fmt.Println(key, ":", value)
+	// }
+	fmt.Print("PrintMap键值对开始输出")
+	for key, _ := range m {
+		fmt.Println(key, ":")
 	}
+	fmt.Print("PrintMap键值对结束输出")
 }
-func GetProtocol(m map[string]string) string {
+func GetProtocol(str string) string {
 	var protocol string
 	// 获取m的“URL”字段的://前的字符内容
-	if strings.Contains(m["URL"], "://") {
-		protocol = strings.Split(m["URL"], "://")[0]
+	if strings.Contains(str, "://") {
+		protocol = strings.Split(str, "://")[0]
 		//如果protocol在protocol_list中，则返回protocol
 		if IsDuplicate(protocol_list, protocol) {
 			return protocol
@@ -297,8 +302,41 @@ func GetProtocol(m map[string]string) string {
 func GetService(m map[string]string) Info {
 	var info Info
 	var service_app = make([]string, 0)
+	//循环遍历m的键值对，查看每一个值的type
+	// for key, value := range m {
+	// 	fmt.Println(key, ":", reflect.TypeOf(value))
+	// 	//如果value中有string中包含"X-Powered-By"，输出key和value
+	// 	if strings.Contains(fmt.Sprintf("%v", value), "X-Powered-By") {
+	// 		fmt.Println("找到", key, ":", value)
+	// 	}
+	// }
+	//将m["Header"]从string转为map[string]string
+	lines := strings.Split(m["Header"], "\n")
+	headerMap := make(map[string]string)
+	for _, line := range lines {
+		parts := strings.SplitN(line, ":", 2) // 只在第一个冒号处分割
+		if len(parts) == 2 {
+			headerMap[strings.TrimSpace(parts[0])] = strings.TrimSpace(parts[1])
+		}
+	}
+	for k, v := range headerMap {
+		m[k] = v
+	}
+	// fmt.Println(X_Powered_by, "::::X_Powered_by:::::")
+	// fmt.Println(m)
+	X_Powered_by := headerMap["X-Powered-By"]
+	Response := headerMap["Response"]
+	Server := headerMap["Server"]
+	FingerPrint := m["FingerPrint"]
+	fmt.Println("X_Powered_by", X_Powered_by)
+	fmt.Println("Response", Response)
+	fmt.Println("Server", Server)
+	fmt.Println("FingerPrint", FingerPrint)
 	//将X-Powered-By，Response，Server，FingerPrint合并为一个字符串
-	var detail_all_in_one = strings.ToLower(m["X-Powered-By"] + m["Response"] + m["Server"] + m["FingerPrint"])
+	var detail_all_in_one = strings.ToLower(X_Powered_by + Response + Server + FingerPrint)
+	// fmt.Println(m)
+	//输出X-Powered-By
+	fmt.Println(m["X-Powered-By"])
 	//识别openssh
 	//将response中的SSH-2.0-OpenSSH_8.0转为openssh/8.0，如果版本号匹配失败(没匹配到SSH-2.0-OpenSSH_)则为openssh/N
 	//ssh之后得改下，不能用split这种
@@ -478,7 +516,17 @@ func GetService(m map[string]string) Info {
 	// 识别端口
 	info.Port, _ = strconv.Atoi(m["Port"])
 	// 识别协议
-	info.Protocol = GetProtocol(m)
+	info.Protocol = GetProtocol(m["URL"])
+	// 如果数组为空，则返回null
+	if len(deviceinfo) == 0 {
+		info.DeviceInfo = nil
+	}
+	if len(info.Honeypot) == 0 {
+		info.Honeypot = nil
+	}
+	if len(info.ServiceApp) == 0 {
+		info.ServiceApp = nil
+	}
 
 	return info
 }

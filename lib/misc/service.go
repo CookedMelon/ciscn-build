@@ -7,6 +7,7 @@ import (
 )
 
 func GetOpenSSH(m map[string]string) string {
+
 	re := regexp.MustCompile(`SSH-2\.0-OpenSSH_([\d\.]+)`)
 	match := re.FindStringSubmatch(m["Response"])
 	if match != nil {
@@ -26,6 +27,7 @@ func GetOpenSSH(m map[string]string) string {
 }
 
 func GetWordPress(m map[string]string) string {
+
 	if strings.Contains(m["FingerPrint"], "WordPress") {
 		fmt.Println("find wordpress:", m["FingerPrint"])
 		re := regexp.MustCompile(`WordPress (\d+\.\d+(\.\d+){0,2})`)
@@ -56,6 +58,7 @@ func GetWindows(m map[string]string) string {
 	return ""
 }
 func GetNginx(m map[string]string) string {
+
 	if strings.Contains(m["FingerPrint"], "nginx") {
 		return "nginx/N"
 	} else if strings.Contains(m["Server"], "nginx") {
@@ -71,6 +74,7 @@ func GetNginx(m map[string]string) string {
 	return ""
 }
 func GetJetty(m map[string]string) string {
+
 	if strings.Contains(m["Server"], "Jetty") {
 		re := regexp.MustCompile(`Jetty(\((.*?)\))?`)
 		matches := re.FindStringSubmatch(m["Server"])
@@ -83,6 +87,7 @@ func GetJetty(m map[string]string) string {
 	return ""
 }
 func GetDebian(m map[string]string) string {
+
 	re := regexp.MustCompile(`Debian-(\d+)`)
 	match := re.FindStringSubmatch(m["Response"])
 	if len(match) > 0 && match[1] != "" { // 如果匹配到 "Debian-数字"
@@ -100,6 +105,7 @@ func GetDebian(m map[string]string) string {
 	return ""
 }
 func GetGrafana(m map[string]string) string {
+
 	if strings.Contains(m["FingerPrint"], "Grafana") {
 		re := regexp.MustCompile(`Grafana (\d+\.\d+(\.\d+){0,2})`)
 		matches := re.FindAllString(m["Body"], -1)
@@ -112,6 +118,7 @@ func GetGrafana(m map[string]string) string {
 	return ""
 }
 func GetNodeJS(m map[string]string) string {
+
 	if strings.Contains(m["FingerPrint"], "Node.js") {
 		re := regexp.MustCompile(`Node.js (\d+\.\d+(\.\d+){0,2})`)
 		matches := re.FindAllString(m["Body"], -1)
@@ -124,12 +131,21 @@ func GetNodeJS(m map[string]string) string {
 	return ""
 }
 func GetPHP(m map[string]string) string {
+
 	re := regexp.MustCompile(`(?i)PHP/([\d\.]+)`)
 	match := re.FindStringSubmatch(m["Server"])
 	if len(match) > 0 && match[1] != "" { // 如果匹配到 "PHP/数字"
 		return "php/" + match[1]
 	} else if strings.Contains(m["Server"], "PHP") {
 		return "php/N"
+	} else if strings.Contains(m["X-Powered-By"], "PHP") {
+		re = regexp.MustCompile(`(?i)PHP/([\d\.]+)`)
+		match = re.FindStringSubmatch(m["X-Powered-By"])
+		if len(match) > 0 && match[1] != "" { // 如果匹配到 "PHP/数字"
+			return "php/" + match[1]
+		} else if strings.Contains(m["X-Powered-By"], "PHP") {
+			return "php/N"
+		}
 	}
 	return ""
 }
@@ -146,6 +162,7 @@ func GetHttpAPI(m map[string]string) string {
 }
 func GetApache(m map[string]string) string {
 	re := regexp.MustCompile(`(?i)Apache/([\d\.]+)`)
+
 	match := re.FindStringSubmatch(m["Server"])
 	if len(match) > 0 && match[1] != "" { // 如果匹配到 "Apache/数字"
 		return "apache/" + match[1]
@@ -155,6 +172,7 @@ func GetApache(m map[string]string) string {
 	return ""
 }
 func GetIIS(m map[string]string) string {
+
 	re := regexp.MustCompile(`(?i)IIS/([\d\.]+)`)
 	match := re.FindStringSubmatch(m["Server"])
 	if len(match) > 0 && match[1] != "" { // 如果匹配到 "iis/数字"
@@ -165,6 +183,7 @@ func GetIIS(m map[string]string) string {
 	return ""
 }
 func GetOpenSSL(m map[string]string) string {
+
 	re := regexp.MustCompile(`(?i)OpenSSL/([\d\.]+)`)
 	match := re.FindStringSubmatch(m["Server"])
 	if len(match) > 0 && match[1] != "" { // 如果匹配到 "openssl/数字"
@@ -175,6 +194,7 @@ func GetOpenSSL(m map[string]string) string {
 	return ""
 }
 func GetUbuntu(m map[string]string) string {
+
 	re := regexp.MustCompile(`Ubuntu-(\d+)`)
 	match := re.FindStringSubmatch(m["Response"])
 	if len(match) > 0 && match[1] != "" { // 如果匹配到 "Ubuntu-数字"

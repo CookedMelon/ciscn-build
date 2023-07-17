@@ -240,9 +240,3 @@ func TestUbuntu(t *testing.T) {
 	}
 	fmt.Println(answer)
 }
-func TestGetProtocol(t *testing.T) {
-	m := map[string]string{}
-	m["Response"] = "SSH-2.0-OpenSSH_8.4p1 Debian-5+deb11u1"
-	m["URL"] = "ssh://113.30.191.68:1022"
-	fmt.Println(GetProtocol(m))
-}
