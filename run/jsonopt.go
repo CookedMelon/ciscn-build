@@ -8,7 +8,7 @@ import (
 
 type Data struct {
 	Services   []Service `json:"services"`
-	DeviceInfo string    `json:"deviceinfo"`
+	DeviceInfo []string  `json:"deviceinfo"`
 	Honeypot   []string  `json:"honeypot"`
 }
 type Service struct {
@@ -61,7 +61,7 @@ func Addip(ip string, jsonData map[string]Data) {
 		// IP地址不存在，创建新的条目
 		newData := Data{
 			Services:   []Service{},
-			DeviceInfo: "new device",
+			DeviceInfo: []string{"new"},
 			Honeypot:   []string{},
 		}
 		fmt.Println(newData)
@@ -177,7 +177,7 @@ func Add(ip string, addData Data) {
 		oldData := jsonData[ip]
 		resuldData := Data{}
 		// 设备信息
-		if addData.DeviceInfo != "" {
+		if addData.DeviceInfo != nil {
 			resuldData.DeviceInfo = addData.DeviceInfo
 		} else {
 			resuldData.DeviceInfo = oldData.DeviceInfo

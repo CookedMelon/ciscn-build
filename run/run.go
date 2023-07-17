@@ -308,6 +308,18 @@ func outputNmapFinger(URL *url.URL, resp *gonmap.Response) {
 	fmt.Println("------------------------------")
 	m["URL"] = URL.String() //nmap扫出的url没有URL
 	tmap := misc.GetService(m)
+	fmt.Println(tmap)
+	tmpService := Service{
+		tmap.Port,
+		tmap.Protocol,
+		tmap.ServiceApp,
+	}
+	tmpData := Data{
+		[]Service{tmpService},
+		tmap.DeviceInfo,
+		tmap.Honeypot,
+	}
+	Add(tmap.Ip, tmpData)
 	misc.Printinfo(tmap)
 	fmt.Println("+++++++++++++++++++++++++++++++++++++++++++++")
 	// outputHandler(URL, finger.Service, m)
@@ -366,6 +378,18 @@ func outputAppFinger(URL *url.URL, banner *appfinger.Banner, finger *appfinger.F
 	fmt.Println("------------------------------")
 	m["URL"] = URL.String() //appfinger扫出的url没有URL
 	tmap := misc.GetService(m)
+	fmt.Println(tmap)
+	tmpService := Service{
+		tmap.Port,
+		tmap.Protocol,
+		tmap.ServiceApp,
+	}
+	tmpData := Data{
+		[]Service{tmpService},
+		tmap.DeviceInfo,
+		tmap.Honeypot,
+	}
+	Add(tmap.Ip, tmpData)
 	misc.Printinfo(tmap)
 	fmt.Println("+++++++++++++++++++++++++++++++++++++++++++++")
 }
@@ -407,6 +431,18 @@ func outputUnknownResponse(addr net.IP, port int, response string) {
 	fmt.Println("------------------------------")
 	m := map[string]string{"IP": URL.Hostname(), "Port": strconv.Itoa(port), "Response": response, "URL": URL.String()}
 	tmap := misc.GetService(m)
+	fmt.Println(tmap)
+	tmpService := Service{
+		tmap.Port,
+		tmap.Protocol,
+		tmap.ServiceApp,
+	}
+	tmpData := Data{
+		[]Service{tmpService},
+		tmap.DeviceInfo,
+		tmap.Honeypot,
+	}
+	Add(tmap.Ip, tmpData)
 	misc.Printinfo(tmap)
 	fmt.Println("+++++++++++++++++++++++++++++++++++++++++++++")
 }
@@ -442,6 +478,18 @@ func outputOpenResponse(addr net.IP, port int) {
 	fmt.Println("------------------------------")
 	m := map[string]string{"IP": URL.Hostname(), "Port": strconv.Itoa(port), "URL": URL.String()}
 	tmap := misc.GetService(m)
+	fmt.Println(tmap)
+	tmpService := Service{
+		tmap.Port,
+		tmap.Protocol,
+		tmap.ServiceApp,
+	}
+	tmpData := Data{
+		[]Service{tmpService},
+		tmap.DeviceInfo,
+		tmap.Honeypot,
+	}
+	Add(tmap.Ip, tmpData)
 	misc.Printinfo(tmap)
 	fmt.Println("+++++++++++++++++++++++++++++++++++++++++++++")
 }
