@@ -48,17 +48,17 @@ func TestAdd2(t *testing.T) {
 	}
 	jsonData1 := Data{
 		Services:   []Service{jsonService1, jsonService2, jsonService3},
-		DeviceInfo: "Windows 10",
+		DeviceInfo: []string{"Windows 10", "Windows 7"},
 		Honeypot:   []string{"honeypot1", "honeypot2"},
 	}
 	jsonData2 := Data{
 		Services:   []Service{jsonService1, jsonService2},
-		DeviceInfo: "Windows 10",
+		DeviceInfo: []string{"Windows 10", "Windows 7"},
 		Honeypot:   []string{"honeypot1"},
 	}
 	jsonData3 := Data{
 		Services:   []Service{jsonService1, jsonService4},
-		DeviceInfo: "",
+		DeviceInfo: []string{"Windows 10", "Windows 7"},
 		Honeypot:   []string{"honeypot1"},
 	}
 	Add("192.168.0.3", jsonData1)
