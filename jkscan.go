@@ -48,6 +48,7 @@ func main() {
 		//开始扫描
 		run.Start()
 	}
+	run.FlushBuffer()
 	//计算程序运行时间
 	elapsed := time.Since(startTime)
 	slog.Printf(slog.INFO, "程序执行总时长为：[%s]", elapsed.String())

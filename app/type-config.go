@@ -76,19 +76,26 @@ func loadOutputJSON(path string) *JSONWriter {
 	if path == "" {
 		return nil
 	}
-	if _, err := os.Stat(path); err == nil || os.IsExist(err) {
-		slog.Println(slog.WARN, "检测到JSON输出文件已存在，将自动删除该文件：", path)
-		if err := os.Remove(path); err != nil {
-			slog.Println(slog.ERROR, "删除文件失败，请检查：", err)
-		}
-	}
+	// if _, err := os.Stat(path); err == nil || os.IsExist(err) {
+	// 	slog.Println(slog.WARN, "检测到JSON输出文件已存在，将自动删除该文件：", path)
+	// 	if err := os.Remove(path); err != nil {
+	// 		slog.Println(slog.ERROR, "删除文件失败，请检查：", err)
+	// 	}
+	// }
 	f, err := os.OpenFile(path, os.O_CREATE+os.O_RDWR, 0764)
 	if err != nil {
 		slog.Println(slog.ERROR, err)
 	}
 	jw := &JSONWriter{f, &sync.Mutex{}}
 	jw.f.Seek(0, 0)
-	_, err = jw.f.WriteString(`[]`)
+	// 如果文件为空，写入空JSON
+	stat, err := jw.f.Stat()
+	if err != nil {
+		slog.Println(slog.ERROR, err)
+	}
+	if stat.Size() == 0 {
+		_, err = jw.f.WriteString(`{}`)
+	}
 	if err != nil {
 		slog.Println(slog.ERROR, err)
 	}
