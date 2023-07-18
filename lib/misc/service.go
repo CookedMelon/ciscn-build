@@ -27,14 +27,12 @@ func GetOpenSSH(m map[string]string) string {
 }
 
 func GetWordPress(m map[string]string) string {
-
 	if strings.Contains(m["FingerPrint"], "WordPress") {
 		fmt.Println("find wordpress:", m["FingerPrint"])
-		re := regexp.MustCompile(`WordPress (\d+\.\d+(\.\d+){0,2})`)
-		matches := re.FindAllString(m["Body"], -1)
-
-		if len(matches) > 0 {
-			return strings.ToLower(matches[0])
+		re := regexp.MustCompile(`content="WordPress ([\d\.]+)"`)
+		matches := re.FindStringSubmatch(m["Body"])
+		if len(matches) >= 2 {
+			return "wordpress/" + matches[1]
 		} else {
 			return "wordpress/N"
 		}
@@ -59,17 +57,18 @@ func GetWindows(m map[string]string) string {
 }
 func GetNginx(m map[string]string) string {
 
-	if strings.Contains(m["FingerPrint"], "nginx") {
-		return "nginx/N"
-	} else if strings.Contains(m["Server"], "nginx") {
+	if strings.Contains(m["Server"], "nginx") {
 		//如Server: nginx/1.18.0 (Ubuntu)提取为nginx/1.18.0，如Server: nginx/1.28.0提取为nginx/1.28.0
-		re := regexp.MustCompile(`nginx/(\d+\.\d+(\.\d+){0,2})`)
-		matches := re.FindAllString(m["Server"], -1)
-		if len(matches) > 0 {
-			return strings.ToLower(matches[0])
+		// re := regexp.MustCompile(`nginx/(\d+\.\d+(\.\d+){0,2})`)
+		re := regexp.MustCompile(`nginx/([\d\.]+)`)
+		matches := re.FindStringSubmatch(m["Server"])
+		if len(matches) >= 2 {
+			return "nginx/" + matches[1]
 		} else {
 			return "nginx/N"
 		}
+	} else if strings.Contains(m["FingerPrint"], "nginx") {
+		return "nginx/N"
 	}
 	return ""
 }
@@ -195,7 +194,7 @@ func GetOpenSSL(m map[string]string) string {
 }
 func GetUbuntu(m map[string]string) string {
 
-	re := regexp.MustCompile(`Ubuntu-(\d+)`)
+	re := regexp.MustCompile(`Ubuntu-(\d+ubuntu[\d\.]+)`)
 	match := re.FindStringSubmatch(m["Response"])
 	if len(match) > 0 && match[1] != "" { // 如果匹配到 "Ubuntu-数字"
 		return "ubuntu/" + match[1]

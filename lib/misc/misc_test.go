@@ -240,3 +240,27 @@ func TestUbuntu(t *testing.T) {
 	}
 	fmt.Println(answer)
 }
+func TestWorkPress(t *testing.T) {
+	m := map[string]string{}
+	m["FingerPrint"] = "WordPress"
+	m["Body"] = `string<meta name="generator" content="WordPress 6.2.2">string`
+	fmt.Println(m["Body"])
+	answer := GetWordPress(m)
+	fmt.Println(answer)
+}
+func TestNgioinx(t *testing.T) {
+	m := map[string]string{}
+	// m["FingerPrint"] = "WordPress"
+	m["Server"] = `nginx/1.22.0`
+	fmt.Println(m["Body"])
+	answer := GetNginx(m)
+	fmt.Println(answer)
+}
+func TestUbuntu2(t *testing.T) {
+	m := map[string]string{}
+	// m["FingerPrint"] = "WordPress"
+	// m["Response"] = `SSH-2.0-OpenSSH_8.9p1 Ubuntu-3ubuntu0.1 `
+	m["Server"] = `(Ubuntu) `
+	answer := GetUbuntu(m)
+	fmt.Println(answer)
+}
