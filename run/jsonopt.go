@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	ap "jkscan/app"
+	"os"
+	"time"
 )
 
 type Data struct {
@@ -21,6 +23,9 @@ type Service struct {
 var globalData = make(map[string]Data)
 var globalCount = 0
 var firstRead = true
+
+// 记录最后一次更新时间
+var lastUpdateTime = time.Now()
 
 func GetJson() map[string]Data {
 	// 读取原始的JSON数据
@@ -111,6 +116,7 @@ func Addip(ip string, jsonData map[string]Data) {
 - addData: 要添加的数据，类型为Data，差量更新
 */
 func Add(ip string, addData Data) {
+	lastUpdateTime = time.Now()
 	// 检查IP地址是否存在于JSON数据中
 	jsonData := GetJson()
 	_, exists := jsonData[ip]
@@ -155,21 +161,51 @@ func Add(ip string, addData Data) {
 		fmt.Println("已更新JSON数据。")
 	}
 
-	// 将更新后的JSON数据写入文本文件
-	updatedJSON, err := json.MarshalIndent(jsonData, "", "    ")
-	if err != nil {
-		fmt.Println("无法转换为JSON：", err)
-		return
-	}
+	// // 将更新后的JSON数据写入文本文件
+	// updatedJSON, err := json.MarshalIndent(jsonData, "", "    ")
+	// if err != nil {
+	// 	fmt.Println("无法转换为JSON：", err)
+	// 	return
+	// }
 	globalData = jsonData
 	globalCount++
 	fmt.Println(globalCount)
 	// 每20次写入一次文件
-	if globalCount >= 20 {
-		globalCount = 0
-		err = ioutil.WriteFile(ap.Args.OutputJson, updatedJSON, 0644)
-		if err != nil {
-			fmt.Println("无法写入文件：", err)
+	// if globalCount >= 20 {
+	// 	globalCount = 0
+	// 	err = ioutil.WriteFile(ap.Args.OutputJson, updatedJSON, 0644)
+	// 	if err != nil {
+	// 		fmt.Println("无法写入文件：", err)
+	// 		return
+	// 	}
+	// }
+}
+
+// 读取globalData，写入文件
+func WriteFile() {
+	// 将更JSON数据写入文本文件
+	updatedJSON, err := json.MarshalIndent(globalData, "", "    ")
+	if err != nil {
+		fmt.Println("无法转换为JSON：", err)
+		return
+	}
+	err = ioutil.WriteFile(ap.Args.OutputJson, updatedJSON, 0644)
+	if err != nil {
+		fmt.Println("无法写入文件：", err)
+		return
+	}
+}
+
+// 定义定时函数，每60秒执行一次，调用WriteFile
+func timer() {
+	ticker := time.NewTicker(60 * time.Second)
+	for range ticker.C {
+		//进行一次文件更新
+		WriteFile()
+		//如果距离最近一次更新时间超过10分钟，则直接停止程序
+		if time.Since(lastUpdateTime) > 1*time.Minute {
+			fmt.Println("已超过1分钟未更新，程序即将退出。")
+			os.Exit(-1)
 			return
 		}
 	}
@@ -188,4 +224,6 @@ func FlushBuffer() {
 		fmt.Println("无法写入文件：", err)
 		return
 	}
+	// 启动定时器
+	go timer()
 }
