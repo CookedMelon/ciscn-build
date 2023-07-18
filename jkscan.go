@@ -45,6 +45,7 @@ func main() {
 	if len(app.Setting.Target) > 0 {
 		//扫描模块初始化
 		Initjkscan()
+		run.Timer()
 		//开始扫描
 		run.Start()
 	}

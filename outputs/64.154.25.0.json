@@ -1,0 +1,18 @@
+{
+    "64.154.25.94": {
+        "services": [
+            {
+                "port": 161,
+                "protocol": "",
+                "service_app": null
+            },
+            {
+                "port": 443,
+                "protocol": "",
+                "service_app": null
+            }
+        ],
+        "deviceinfo": null,
+        "honeypot": null
+    }
+}

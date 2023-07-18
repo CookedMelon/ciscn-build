@@ -201,16 +201,23 @@ func timer() {
 	ticker := time.NewTicker(60 * time.Second)
 	for range ticker.C {
 		//进行一次文件更新
+		fmt.Println("定时器触发，进行一次文件更新。")
 		WriteFile()
 		//如果距离最近一次更新时间超过10分钟，则直接停止程序
-		if time.Since(lastUpdateTime) > 1*time.Minute {
-			fmt.Println("已超过1分钟未更新，程序即将退出。")
+		if time.Since(lastUpdateTime) > 20*time.Minute {
+			fmt.Println("已超过20分钟未更新，程序即将退出。")
 			os.Exit(-1)
 			return
 		}
 	}
 }
 
+// 计时器函数
+func Timer() {
+	// 启动定时器
+	fmt.Println("启动定时器。")
+	go timer()
+}
 func FlushBuffer() {
 	jsonData := GetJson()
 	// 将更新后的JSON数据写入文本文件
@@ -224,6 +231,4 @@ func FlushBuffer() {
 		fmt.Println("无法写入文件：", err)
 		return
 	}
-	// 启动定时器
-	go timer()
 }
