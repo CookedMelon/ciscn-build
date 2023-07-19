@@ -67,7 +67,7 @@ func SetUsage(s string) {
 	}
 }
 
-func Parse() {
+func InitArgs() {
 	fixArgs()
 	flag.Parse()
 	for strPtr, splicePtr := range stringSpliceParamMap {

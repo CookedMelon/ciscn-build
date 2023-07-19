@@ -1,7 +1,0 @@
-version: "3"
-services:
-  jkscan:
-    build: .
-    volumes:
-      - ./outputs:/app/outputs
-      - ./outlogs:/app/outlogs

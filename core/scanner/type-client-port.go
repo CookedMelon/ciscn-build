@@ -1,8 +1,9 @@
 package scanner
 
 import (
-	"github.com/lcvvvv/gonmap"
 	"net"
+
+	"github.com/lcvvvv/gonmap"
 )
 
 type foo1 struct {

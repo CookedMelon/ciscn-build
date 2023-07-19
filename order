@@ -1,4 +1,4 @@
- cd jkscan/sican-build
+cd /root/jkscan/sican-build-master;
 go run ./jkscan.go -t 211.22.90.0/24 -p 1-65535 -oJ outputs/211.22.90.0.json > outlogs/211.22.90.0.log;
 go run ./jkscan.go -t 198.175.7.0/24 -p 1-65535 -oJ outputs/198.175.7.0.json > outlogs/198.175.7.0.log;
 go run ./jkscan.go -t 64.154.25.0/24 -p 1-65535 -oJ outputs/64.154.25.0.json > outlogs/64.154.25.0.log;

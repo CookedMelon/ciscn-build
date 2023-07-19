@@ -1,11 +1,9 @@
 package app
 
 import (
-	"encoding/csv"
 	"jkscan/core/slog"
 	"jkscan/lib/misc"
 	"os"
-	"sync"
 	"time"
 )
 
@@ -15,24 +13,11 @@ type Config struct {
 	Output                       *os.File
 	Proxy, Encoding              string
 	Path, Host                   []string
-	OutputJson                   *JSONWriter
-	OutputCSV                    *CSVWriter
 	Threads                      int
 	Timeout                      time.Duration
 	ClosePing, Check, CloseColor bool
 	ScanVersion                  bool
 	Spy                          string
-	//hydra
-	Hydra, HydraUpdate             bool
-	HydraPass, HydraUser, HydraMod []string
-	//fofa
-	Fofa           []string
-	FofaFixKeyword string
-	FofaSize       int
-	Scan           bool
-	//CDN检测模块
-	DownloadQQwry bool
-	CloseCDN      bool
 	//输出修饰
 	Match    string
 	NotMatch string
@@ -50,88 +35,17 @@ func ConfigInit() {
 	Setting.loadExcludedPort()
 	Setting.loadOutput()
 	Setting.loadScanPing()
-	Setting.Timeout = time.Duration(args.Timeout) * time.Second
 	Setting.Check = args.Check
-	if Setting.Check == true {
-		Setting.Port = []int{}
-	}
 	Setting.Path = args.Path
 	Setting.Proxy = args.Proxy
 	Setting.Host = args.Host
 	Setting.Threads = args.Threads
 	Setting.Encoding = args.Encoding
-	Setting.OutputJson = loadOutputJSON(args.OutputJson)
-	Setting.OutputCSV = loadOutputCSV(args.OutputCSV)
 	Setting.ScanVersion = args.ScanVersion
 	//Setting.CloseColor = args.CloseColor
-	//CDN检测模块
-	Setting.DownloadQQwry = args.DownloadQQwry
-	Setting.CloseCDN = args.CloseCDN
 	//输出修饰
 	Setting.Match = args.Match
 	Setting.NotMatch = args.NotMatch
-}
-
-func loadOutputJSON(path string) *JSONWriter {
-	if path == "" {
-		return nil
-	}
-	// if _, err := os.Stat(path); err == nil || os.IsExist(err) {
-	// 	slog.Println(slog.WARN, "检测到JSON输出文件已存在，将自动删除该文件：", path)
-	// 	if err := os.Remove(path); err != nil {
-	// 		slog.Println(slog.ERROR, "删除文件失败，请检查：", err)
-	// 	}
-	// }
-	f, err := os.OpenFile(path, os.O_CREATE+os.O_RDWR, 0764)
-	if err != nil {
-		slog.Println(slog.ERROR, err)
-	}
-	jw := &JSONWriter{f, &sync.Mutex{}}
-	jw.f.Seek(0, 0)
-	// 如果文件为空，写入空JSON
-	stat, err := jw.f.Stat()
-	if err != nil {
-		slog.Println(slog.ERROR, err)
-	}
-	if stat.Size() == 0 {
-		_, err = jw.f.WriteString(`{}`)
-	}
-	if err != nil {
-		slog.Println(slog.ERROR, err)
-	}
-	return &JSONWriter{f, &sync.Mutex{}}
-}
-
-func loadOutputCSV(path string) *CSVWriter {
-	if path == "" {
-		return nil
-	}
-
-	if _, err := os.Stat(path); err == nil || os.IsExist(err) {
-		slog.Println(slog.WARN, "检测到CSV输出文件已存在，将自动删除该文件：", path)
-		if err := os.Remove(path); err != nil {
-			slog.Println(slog.ERROR, "删除文件失败，请检查：", err)
-		}
-	}
-
-	f, err := os.OpenFile(path, os.O_CREATE+os.O_RDWR, 0764)
-	if err != nil {
-		slog.Println(slog.ERROR, err)
-	}
-	f.WriteString("\xEF\xBB\xBF") // 写入UTF-8 BOM
-	w := csv.NewWriter(f)
-	writer := &CSVWriter{w, []string{
-		"URL", "Keyword", "IP", "Port", "Service", "Length",
-		"FingerPrint", "Addr",
-		"Digest", "Info", "Hostname", "OperatingSystem",
-		"DeviceType", "ProductName", "Version",
-		"FoundDomain", "FoundIP", "ICP",
-		"ProbeName", "MatchRegexString",
-		//"Header", "Cert", "Response", "Body",
-	}}
-	writer.f.Write(writer.title)
-	writer.f.Flush()
-	return writer
 }
 
 func (c *Config) loadPort() {
@@ -139,10 +53,10 @@ func (c *Config) loadPort() {
 		c.Port = append(c.Port, Args.Port...)
 	}
 	if Args.Top != 400 {
-		c.Port = append(c.Port, TOP_1000[:Args.Top]...)
+		c.Port = append(c.Port, NormalUse[:Args.Top]...)
 	}
 	if len(c.Port) == 0 {
-		c.Port = TOP_1000[:400]
+		c.Port = NormalUse[:400]
 	}
 
 	c.Port = misc.RemoveDuplicateElement(c.Port)
@@ -184,11 +98,11 @@ func (c *Config) loadOutput() {
 }
 
 func (c *Config) loadScanPing() {
-	if len(c.Port) < 10 {
+	if len(c.Port) < 20 {
 		c.ClosePing = true
-		slog.Println(slog.INFO, "由于扫描端口数量小于10，已自动关闭主机存活性检测功能")
+		slog.Println(slog.INFO, "扫描端口数量小于20，关闭主机存活性检测功能")
 	} else {
-		c.ClosePing = Args.ClosePing
+		c.ClosePing = Args.NotPing
 	}
 }
 
@@ -198,7 +112,6 @@ func New() Config {
 		Path:     []string{"/"},
 		Port:     []int{},
 		Output:   nil,
-		Proxy:    "",
 		Host:     []string{},
 		Threads:  800,
 		Timeout:  0,
@@ -206,7 +119,7 @@ func New() Config {
 	}
 }
 
-var TOP_1000 = []int{21, 22, 23, 25, 53, 69, 80, 81, 88, 89, 110, 135, 161, 445, 139, 137,
+var NormalUse = []int{21, 22, 23, 25, 53, 69, 80, 81, 88, 89, 110, 135, 161, 445, 139, 137,
 	143, 389, 443, 512, 513, 514, 548, 873, 1433, 1521, 2181, 3306, 3389, 3690, 4848, 5000,
 	5001, 5432, 5632, 5900, 5901, 5902, 6379, 7000, 7001, 7002, 8000, 8001, 8007, 8008, 8009,
 	8069, 8080, 8081, 8088, 8089, 8090, 8091, 9060, 9090, 9091, 9200, 9300, 10000, 11211, 27017,

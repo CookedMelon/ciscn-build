@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	ap "jkscan/app"
+	"jkscan/core/slog"
 	"os"
 	"time"
 )
@@ -38,18 +39,18 @@ func GetJson() map[string]Data {
 			// 将数据结构转换为JSON格式
 			updatedJSON, err := json.MarshalIndent(jsonData, "", "    ")
 			if err != nil {
-				fmt.Println("无法转换为JSON：", err)
+				slog.Println(slog.ERROR, "无法转换为JSON：", err)
 				return jsonData
 			}
 
 			// 创建新的JSON文件并写入数据
 			err = ioutil.WriteFile(ap.Args.OutputJson, updatedJSON, 0644)
 			if err != nil {
-				fmt.Println("无法写入文件：", err)
+				slog.Println(slog.ERROR, "无法写入文件：", err)
 				return jsonData
 			}
 
-			fmt.Println("已创建新的JSON文件并初始化数据。")
+			slog.Println(slog.INFO, "已创建新的JSON文件并初始化数据。")
 			return jsonData
 		}
 
@@ -57,11 +58,11 @@ func GetJson() map[string]Data {
 		var jsonData map[string]Data
 		err = json.Unmarshal(file, &jsonData)
 		if err != nil {
-			fmt.Println("无法解析JSON：", err)
+			slog.Println(slog.ERROR, "无法解析JSON：", err)
 			return jsonData
 		}
 
-		fmt.Println("已加载现有的JSON数据。")
+		slog.Println(slog.INFO, "已加载现有的JSON数据。")
 		firstRead = false
 		globalData = jsonData
 		return jsonData
@@ -87,20 +88,20 @@ func Addip(ip string, jsonData map[string]Data) {
 		// 将更新后的JSON数据写入文本文件
 		updatedJSON, err := json.MarshalIndent(jsonData, "", "    ")
 		if err != nil {
-			fmt.Println("无法转换为JSON：", err)
+			slog.Println(slog.ERROR, "无法转换为JSON：", err)
 			return
 		}
 
 		err = ioutil.WriteFile(ap.Args.OutputJson, updatedJSON, 0644)
 		if err != nil {
-			fmt.Println("无法写入文件：", err)
+			slog.Println(slog.ERROR, "无法写入文件：", err)
 			return
 		}
 
-		fmt.Println("已向JSON数据添加新的条目。")
+		slog.Println(slog.INFO, "已向JSON数据添加新的条目。")
 	} else {
 		// IP地址已存在
-		fmt.Println("JSON数据中已存在该IP地址。")
+		slog.Println(slog.INFO, "JSON数据中已存在该IP地址。")
 	}
 }
 
@@ -123,7 +124,7 @@ func Add(ip string, addData Data) {
 	if !exists {
 		// IP地址不存在，创建新的条目
 		jsonData[ip] = addData
-		fmt.Println("已向JSON数据添加新的条目。")
+		slog.Println(slog.INFO, "已向JSON数据添加新的条目。")
 	} else {
 		// IP地址已存在
 		// 进行差量更新
@@ -158,13 +159,13 @@ func Add(ip string, addData Data) {
 			resuldData.Services = append(resuldData.Services, v)
 		}
 		jsonData[ip] = resuldData
-		fmt.Println("已更新JSON数据。")
+		slog.Println(slog.INFO, "已更新JSON数据。")
 	}
 
 	// // 将更新后的JSON数据写入文本文件
 	// updatedJSON, err := json.MarshalIndent(jsonData, "", "    ")
 	// if err != nil {
-	// 	fmt.Println("无法转换为JSON：", err)
+	// 	slog.Println(slog.INFO, "无法转换为JSON：", err)
 	// 	return
 	// }
 	globalData = jsonData
@@ -175,7 +176,7 @@ func Add(ip string, addData Data) {
 	// 	globalCount = 0
 	// 	err = ioutil.WriteFile(ap.Args.OutputJson, updatedJSON, 0644)
 	// 	if err != nil {
-	// 		fmt.Println("无法写入文件：", err)
+	// 		slog.Println(slog.INFO, "无法写入文件：", err)
 	// 		return
 	// 	}
 	// }
@@ -186,12 +187,12 @@ func WriteFile() {
 	// 将更JSON数据写入文本文件
 	updatedJSON, err := json.MarshalIndent(globalData, "", "    ")
 	if err != nil {
-		fmt.Println("无法转换为JSON：", err)
+		slog.Println(slog.ERROR, "无法转换为JSON：", err)
 		return
 	}
 	err = ioutil.WriteFile(ap.Args.OutputJson, updatedJSON, 0644)
 	if err != nil {
-		fmt.Println("无法写入文件：", err)
+		slog.Println(slog.ERROR, "无法写入文件：", err)
 		return
 	}
 }
@@ -201,11 +202,11 @@ func timer() {
 	ticker := time.NewTicker(60 * time.Second)
 	for range ticker.C {
 		//进行一次文件更新
-		fmt.Println("定时器触发，进行一次文件更新。")
+		slog.Println(slog.INFO, "定时器触发，进行一次文件更新。")
 		WriteFile()
 		//如果距离最近一次更新时间超过10分钟，则直接停止程序
 		if time.Since(lastUpdateTime) > 20*time.Minute {
-			fmt.Println("已超过20分钟未更新，程序即将退出。")
+			slog.Println(slog.ERROR, "已超过20分钟未更新，程序即将退出。")
 			os.Exit(-1)
 			return
 		}
@@ -215,7 +216,7 @@ func timer() {
 // 计时器函数
 func Timer() {
 	// 启动定时器
-	fmt.Println("启动定时器。")
+	slog.Println(slog.INFO, "定时器已启动。")
 	go timer()
 }
 func FlushBuffer() {
@@ -223,12 +224,12 @@ func FlushBuffer() {
 	// 将更新后的JSON数据写入文本文件
 	updatedJSON, err := json.MarshalIndent(jsonData, "", "    ")
 	if err != nil {
-		fmt.Println("无法转换为JSON：", err)
+		slog.Println(slog.ERROR, "无法转换为JSON：", err)
 		return
 	}
 	err = ioutil.WriteFile(ap.Args.OutputJson, updatedJSON, 0644)
 	if err != nil {
-		fmt.Println("无法写入文件：", err)
+		slog.Println(slog.ERROR, "无法写入文件：", err)
 		return
 	}
 }

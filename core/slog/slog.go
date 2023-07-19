@@ -2,7 +2,6 @@ package slog
 
 import (
 	"fmt"
-	"github.com/lcvvvv/stdio"
 	"io"
 	"io/ioutil"
 	"jkscan/lib/color"
@@ -48,25 +47,25 @@ func (l *Logger) Println(s ...interface{}) {
 }
 
 var info = &Logger{
-	log.New(stdio.Out, "\r[+]", log.Ldate|log.Ltime),
+	log.New(os.Stdout, "\r[+]", log.Ldate|log.Ltime),
 	color.Green,
 	nil,
 }
 
 var warn = &Logger{
-	log.New(stdio.Out, "\r[*]", log.Ldate|log.Ltime),
-	color.Red,
+	log.New(os.Stderr, "\r[-]", log.Ldate|log.Ltime),
+	color.Yellow,
 	nil,
 }
 
 var err = &Logger{
-	log.New(io.MultiWriter(stdio.Err), "\rError:", 0),
-	nil,
+	log.New(os.Stderr, "\r[!]", log.Ldate|log.Ltime),
+	color.Red,
 	nil,
 }
 
 var dbg = &Logger{
-	log.New(stdio.Out, "\r[-]", log.Ldate|log.Ltime),
+	log.New(os.Stdout, "\r[*]", log.Ldate|log.Ltime),
 	debugModifier,
 	debugFilter,
 }
@@ -92,7 +91,7 @@ func debugFilter(s string) bool {
 }
 
 var data = &Logger{
-	log.New(stdio.Out, "\r", 0),
+	log.New(os.Stdout, "\r", 0),
 	nil,
 	nil,
 }

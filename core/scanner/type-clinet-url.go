@@ -2,10 +2,12 @@ package scanner
 
 import (
 	"errors"
-	"github.com/lcvvvv/appfinger"
-	"github.com/lcvvvv/gonmap"
 	"net/http"
 	"net/url"
+
+	"github.com/lcvvvv/gonmap"
+
+	"github.com/lcvvvv/appfinger"
 )
 
 type foo2 struct {

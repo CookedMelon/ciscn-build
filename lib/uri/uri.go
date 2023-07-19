@@ -111,8 +111,8 @@ func IsIPRanger(str string) bool {
 	return false
 }
 
-// IsNetlocPort checks if a string is [Domain or IP]:Port
-func IsNetlocPort(str string) bool {
+// IsNetWithPort checks if a string is [Domain or IP]:Port
+func IsNetWithPort(str string) bool {
 	r := strings.Split(str, ":")
 	if len(r) != 2 {
 		return false
@@ -168,7 +168,7 @@ func IsURL(str string) bool {
 	if IsNetloc(str) {
 		return true
 	}
-	if IsNetlocPort(str) {
+	if IsNetWithPort(str) {
 		return true
 	}
 	if IsHostPath(str) {
@@ -187,7 +187,7 @@ func IsHostPath(str string) bool {
 	}
 	str = str[:index]
 	if strings.Contains(str, ":") == true {
-		return IsNetlocPort(str)
+		return IsNetWithPort(str)
 	} else {
 		return IsNetloc(str)
 

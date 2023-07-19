@@ -14,9 +14,9 @@ require (
 
 	//gonmap
 	github.com/lcvvvv/gonmap v1.3.4
-	github.com/lcvvvv/pool v0.0.0-00010101000000-000000000000
-	github.com/lcvvvv/simplehttp v0.1.1
-	github.com/lcvvvv/stdio v0.1.2
+	jkscan/lib/pool v0.0.0-00010101000000-000000000000
+	jkscan/lib/simplehttp v0.1.1
+	jkscan/lib/stdio v0.1.2
 	github.com/lib/pq v1.10.2
 
 	//grdp
@@ -56,6 +56,6 @@ require (
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 )
 
-replace github.com/lcvvvv/pool => ./lib/pool
+replace jkscan/lib/pool => ./lib/pool
 
 //replace github.com/lcvvvv/gonmap => ../go-github/gonmap

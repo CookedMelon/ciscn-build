@@ -1,0 +1,9 @@
+go run ./jkscan.go -t 134.122.18.0/24 -p 1-65535 -oJ outputs/134.122.18.0.json > outlogs/134.122.18.0.log;
+go run ./jkscan.go -t 142.93.224.0/24 -p 1-65535 -oJ outputs/142.93.224.0.json > outlogs/142.93.224.0.log;
+go run ./jkscan.go -t 68.183.177.0/24 -p 1-65535 -oJ outputs/68.183.177.0.json > outlogs/68.183.177.0.log;
+go run ./jkscan.go -t 142.93.206.0/24 -p 1-65535 -oJ outputs/142.93.206.0.json > outlogs/142.93.206.0.log;
+go run ./jkscan.go -t 143.110.240.0/24 -p 1-65535 -oJ outputs/143.110.240.0.json > outlogs/143.110.240.0.log;
+go run ./jkscan.go -t 143.110.244.0/24 -p 1-65535 -oJ outputs/143.110.244.0.json > outlogs/143.110.244.0.log;
+go run ./jkscan.go -t 68.183.233.0/24 -p 1-65535 -oJ outputs/68.183.233.0.json > outlogs/68.183.233.0.log;
+go run ./jkscan.go -t 138.68.173.0/24 -p 1-65535 -oJ outputs/138.68.173.0.json > outlogs/138.68.173.0.log;
+go run ./jkscan.go -t 68.183.46.0/24 -p 1-65535 -oJ outputs/68.183.46.0.json > outlogs/68.183.46.0.log;

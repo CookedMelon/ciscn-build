@@ -21,12 +21,12 @@ func SetLogger(log Logger) {
 	logger = log
 }
 
-//创建worker，每一个worker抽象成一个可以执行任务的函数
+// 创建worker，每一个worker抽象成一个可以执行任务的函数
 type Worker struct {
 	f func(interface{})
 }
 
-//通过NewTask来创建一个worker
+// 通过NewTask来创建一个worker
 func generateWorker(f func(interface{})) *Worker {
 	return &Worker{
 		f: func(in interface{}) {
@@ -35,12 +35,12 @@ func generateWorker(f func(interface{})) *Worker {
 	}
 }
 
-//执行worker
+// 执行worker
 func (t *Worker) run(in interface{}) {
 	t.f(in)
 }
 
-//池
+// 池
 type Pool struct {
 	//母版函数
 	Function func(interface{})
@@ -60,7 +60,7 @@ type Pool struct {
 	Done bool
 }
 
-//实例化工作池使用
+// 实例化工作池使用
 func New(threads int) *Pool {
 	return &Pool{
 		threads:  threads,
@@ -73,7 +73,7 @@ func New(threads int) *Pool {
 	}
 }
 
-//结束整个工作
+// 结束整个工作
 func (p *Pool) Push(i interface{}) {
 	if p.Done {
 		return
@@ -81,7 +81,7 @@ func (p *Pool) Push(i interface{}) {
 	p.in <- i
 }
 
-//结束整个工作
+// 结束整个工作
 func (p *Pool) Stop() {
 	if p.Done != true {
 		close(p.in)
@@ -89,7 +89,7 @@ func (p *Pool) Stop() {
 	p.Done = true
 }
 
-//执行工作池当中的任务
+// 执行工作池当中的任务
 func (p *Pool) Run() {
 	p.Done = false
 	//只启动有限大小的协程，协程的数量不可以超过工作池设定的数量，防止计算资源崩溃
@@ -97,18 +97,18 @@ func (p *Pool) Run() {
 		p.wg.Add(1)
 		time.Sleep(p.Interval)
 		go p.work()
-		if p.Done == true {
+		if p.Done {
 			break
 		}
 	}
 	p.wg.Wait()
 }
 
-//从jobs当中取出任务并执行。
+// 从jobs当中取出任务并执行。
 func (p *Pool) work() {
 	var Tick string
 	var param interface{}
-	//减少waitGroup计数器的值
+	//减少WaitGroup计数器的值
 	defer func() {
 		defer func() {
 			if e := recover(); e != nil {
@@ -136,13 +136,13 @@ func (p *Pool) work() {
 	}
 }
 
-//生成工作票据
+// 生成工作票据
 func (p *Pool) generateTick() string {
 	rand.Seed(time.Now().UnixNano())
 	return strconv.FormatInt(rand.Int63(), 10)
 }
 
-//获取线程数
+// 获取线程数
 func (p *Pool) Threads() int {
 	return p.threads
 }
