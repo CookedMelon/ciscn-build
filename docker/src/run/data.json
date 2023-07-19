@@ -1,0 +1,40 @@
+{
+    "192.168.0.3": {
+        "services": [
+            {
+                "port": 80,
+                "protocol": "http",
+                "service_app": [
+                    "Apache",
+                    "nginx"
+                ]
+            },
+            {
+                "port": 443,
+                "protocol": "https",
+                "service_app": [
+                    "Apache",
+                    "nginx"
+                ]
+            },
+            {
+                "port": 4,
+                "protocol": "https",
+                "service_app": null
+            },
+            {
+                "port": 55,
+                "protocol": "https",
+                "service_app": [
+                    "abc",
+                    "def"
+                ]
+            }
+        ],
+        "deviceinfo": "Windows 10",
+        "honeypot": [
+            "honeypot1",
+            "honeypot2"
+        ]
+    }
+}
