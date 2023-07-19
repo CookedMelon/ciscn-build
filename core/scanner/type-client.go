@@ -1,6 +1,6 @@
 package scanner
 
-import "jkscan/lib/pool"
+import "github.com/lcvvvv/pool"
 
 type client struct {
 	config *Config

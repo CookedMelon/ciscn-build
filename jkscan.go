@@ -9,7 +9,7 @@ import (
 	"os"
 	"time"
 
-	"jkscan/lib/pool"
+	"github.com/lcvvvv/pool"
 
 	"github.com/lcvvvv/appfinger"
 )

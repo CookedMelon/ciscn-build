@@ -215,7 +215,7 @@ func printNmapResult(URL *url.URL, resp *gonmap.Response) {
 		return
 	}
 	finger := resp.FingerPrint
-	m := misc.ToMap(finger)
+	m := misc.TurnMap(finger)
 	m["Response"] = resp.Raw
 	m["IP"] = URL.Hostname()
 	m["Port"] = URL.Port()
@@ -247,7 +247,7 @@ func printAppResult(URL *url.URL, banner *appfinger.Banner, finger *appfinger.Fi
 	if responseFilter(banner.Response, banner.Cert) {
 		return
 	}
-	m := misc.ToMap(finger)
+	m := misc.TurnMap(finger)
 	m["Service"] = URL.Scheme
 	m["FoundIP"] = banner.FoundIP
 	m["Response"] = banner.Response

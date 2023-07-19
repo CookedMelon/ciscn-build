@@ -1,3 +1,3 @@
-module jkscan/lib/pool
+module github.com/lcvvvv/pool
 
 go 1.17

@@ -1,9 +1,7 @@
 package misc
 
 import (
-	"encoding/base64"
 	"fmt"
-	"math/rand"
 	"reflect"
 	"strconv"
 	"strings"
@@ -73,59 +71,7 @@ func FixLine(line string) string {
 	return line
 }
 
-func Xrange(args ...int) []int {
-	var start, stop int
-	var step = 1
-	var r []int
-	switch len(args) {
-	case 1:
-		stop = args[0]
-		start = 0
-	case 2:
-		start, stop = args[0], args[1]
-	case 3:
-		start, stop, step = args[0], args[1], args[2]
-	default:
-		return nil
-	}
-	if start > stop {
-		return nil
-	}
-	if step < 0 {
-		return nil
-	}
-
-	for i := start; i <= stop; i += step {
-		r = append(r, i)
-	}
-	return r
-}
-
-func MustLength(s string, i int) string {
-	if len(s) > i {
-		return s[:i]
-	}
-	return s
-}
-
-func Percent(int1 int, int2 int) string {
-	float1 := float64(int1)
-	float2 := float64(int2)
-	f := 1 - float1/float2
-	f = f * 100
-	return strconv.FormatFloat(f, 'f', 2, 64)
-}
-
-func StrRandomCut(s string, length int) string {
-	sRune := []rune(s)
-	if len(sRune) > length {
-		i := rand.Intn(len(sRune) - length)
-		return string(sRune[i : i+length])
-	} else {
-		return s
-	}
-}
-func removeEmptyStrings(slice []string) []string {
+func removeEmpty(slice []string) []string {
 	newSlice := make([]string, 0)
 	for _, str := range slice {
 		if str != "" {
@@ -134,97 +80,7 @@ func removeEmptyStrings(slice []string) []string {
 	}
 	return newSlice
 }
-func Base64Encode(keyword string) string {
-	input := []byte(keyword)
-	encodeString := base64.StdEncoding.EncodeToString(input)
-	return encodeString
-}
-
-func Base64Decode(encodeString string) (string, error) {
-	decodeBytes, err := base64.StdEncoding.DecodeString(encodeString)
-	return string(decodeBytes), err
-}
-
-func CloneStrMap(strMap map[string]string) map[string]string {
-	newStrMap := make(map[string]string)
-	for k, v := range strMap {
-		newStrMap[k] = v
-	}
-	return newStrMap
-}
-
-func CloneIntMap(intMap map[int]string) map[int]string {
-	newIntMap := make(map[int]string)
-	for k, v := range intMap {
-		newIntMap[k] = v
-	}
-	return newIntMap
-}
-
-func RandomString(i ...int) string {
-	var length int
-	var str string
-	if len(i) != 1 {
-		length = 32
-	} else {
-		length = i[0]
-	}
-	Char := "01234567890abcdef"
-	for range Xrange(length) {
-		j := rand.Intn(len(Char) - 1)
-		str += Char[j : j+1]
-	}
-	return str
-}
-
-func Intersection(a []string, b []string) (inter []string) {
-	for _, s1 := range a {
-		for _, s2 := range b {
-			if s1 == s2 {
-				inter = append(inter, s1)
-			}
-		}
-	}
-	return inter
-}
-
-func FixMap(m map[string]string) map[string]string {
-	var arr []string
-	rm := make(map[string]string)
-	for key, value := range m {
-		if value == "" {
-			continue
-		}
-		if IsDuplicate(arr, value) {
-			if key != "Username" && key != "Password" {
-				continue
-			}
-		}
-		arr = append(arr, value)
-		rm[key] = value
-	}
-	return rm
-}
-
-func CloneMap(m map[string]string) map[string]string {
-	var nm = make(map[string]string)
-	for key, value := range m {
-		nm[key] = value
-	}
-	return nm
-}
-
-func AutoWidth(s string, length int) int {
-	length1 := len(s)
-	length2 := len([]rune(s))
-
-	if length1 == length2 {
-		return length
-	}
-	return length - (length1-length2)/2
-}
-
-func ToMap(param interface{}) map[string]string {
+func TurnMap(param interface{}) map[string]string {
 	t := reflect.TypeOf(param)
 	v := reflect.ValueOf(param)
 	if t.Kind() == reflect.Ptr {
@@ -262,16 +118,6 @@ func CopySlice[T any](slice []T) []T {
 	return v
 }
 
-func TidyMap(m map[string]string) map[string]string {
-	var nm = make(map[string]string)
-	for key, value := range m {
-		if value == "" || key == "MatchRegexString" || key == "Response" || key == "Body" || key == "Cert" || key == "Header" {
-			continue
-		}
-		nm[key] = value
-	}
-	return nm
-}
 func PrintMap(m map[string]string) {
 	// fmt.Println("map:")
 	// for key, value := range m {
@@ -343,11 +189,19 @@ func GetService(m map[string]string) Info {
 	// fmt.Println(m)
 	//输出X-Powered-By
 	fmt.Println(m["X-Powered-By"])
+
+	honeypot := make([]string, 0)
+
 	//识别openssh
 	//将response中的SSH-2.0-OpenSSH_8.0转为openssh/8.0，如果版本号匹配失败(没匹配到SSH-2.0-OpenSSH_)则为openssh/N
 	//ssh之后得改下，不能用split这种
 	if strings.Contains(detail_all_in_one, "openssh") {
-		service_app = append(service_app, GetOpenSSH(m))
+		ssh_version := GetOpenSSH(m)
+		service_app = append(service_app, ssh_version)
+		//如果ssh_version中有openssh/5，则添加蜜罐
+		if strings.Contains(ssh_version, "openssh/5") {
+			honeypot = append(honeypot, m["Port"]+"kippo")
+		}
 	}
 	// 识别wordpress，从Body中提取content="WordPress 6.0.5"字样为workpress/6.0.5，若未匹配到则为workpress/N
 	if strings.Contains(detail_all_in_one, "wordpress") {
@@ -490,15 +344,14 @@ func GetService(m map[string]string) Info {
 	if strings.Contains(detail_all_in_one, "centos") {
 		service_app = append(service_app, "centos/N")
 	}
-	info.ServiceApp = removeEmptyStrings(service_app)
+	info.ServiceApp = removeEmpty(service_app)
 	// 识别蜜罐
-	honeypot := make([]string, 0)
-	honeypot_list := []string{"glastopf", "kippo", "hfish"}
+	//kippo的在上面处理
+	honeypot_list := []string{"glastopf", "hfish"}
 	//循环遍历，若匹配成功添加端口/蜜罐名
 	for _, honeypot_name := range honeypot_list {
 		if strings.Contains(detail_all_in_one, honeypot_name) {
-			honeypot = append(honeypot, m["Port"])
-			honeypot = append(honeypot, honeypot_name)
+			honeypot = append(honeypot, m["Port"]+honeypot_name)
 		}
 	}
 	info.Honeypot = honeypot
