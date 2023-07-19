@@ -338,6 +338,8 @@ func GetService(m map[string]string) Info {
 	fmt.Println("Response", Response)
 	fmt.Println("Server", Server)
 	fmt.Println("FingerPrint", FingerPrint)
+	honeypot := make([]string, 0)
+
 	//将X-Powered-By，Response，Server，FingerPrint合并为一个字符串
 	var detail_all_in_one = strings.ToLower(X_Powered_by + Response + Server + FingerPrint)
 	// fmt.Println(m)
@@ -347,7 +349,12 @@ func GetService(m map[string]string) Info {
 	//将response中的SSH-2.0-OpenSSH_8.0转为openssh/8.0，如果版本号匹配失败(没匹配到SSH-2.0-OpenSSH_)则为openssh/N
 	//ssh之后得改下，不能用split这种
 	if strings.Contains(detail_all_in_one, "openssh") {
-		service_app = append(service_app, GetOpenSSH(m))
+		ssh_verion := GetOpenSSH(m)
+		service_app = append(service_app, ssh_verion)
+		// 如果有openssh/5，添加蜜罐
+		if strings.Contains(ssh_verion, "openssh/5") {
+			honeypot = append(honeypot, m["Port"]+"/kippo")
+		}
 	}
 	// 识别wordpress，从Body中提取content="WordPress 6.0.5"字样为workpress/6.0.5，若未匹配到则为workpress/N
 	if strings.Contains(detail_all_in_one, "wordpress") {
@@ -492,13 +499,11 @@ func GetService(m map[string]string) Info {
 	}
 	info.ServiceApp = removeEmptyStrings(service_app)
 	// 识别蜜罐
-	honeypot := make([]string, 0)
-	honeypot_list := []string{"glastopf", "kippo", "hfish"}
+	honeypot_list := []string{"glastopf", "hfish"}
 	//循环遍历，若匹配成功添加端口/蜜罐名
 	for _, honeypot_name := range honeypot_list {
 		if strings.Contains(detail_all_in_one, honeypot_name) {
-			honeypot = append(honeypot, m["Port"])
-			honeypot = append(honeypot, honeypot_name)
+			honeypot = append(honeypot, m["Port"]+"/"+honeypot_name)
 		}
 	}
 	info.Honeypot = honeypot
